@@ -1,1 +1,6 @@
-users - CRUD
+users 
+- CRUD
+- Login / authentication
+
+- User role
+- Token Expiration
