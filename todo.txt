@@ -4,3 +4,8 @@ users
 
 - User role
 - Token Expiration
+
+
+Products
+- Complete products CRUD
+- Image Compression & Optimization

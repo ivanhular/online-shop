@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 
+
 // product_name
 // category_id
 // product_descriptions
@@ -22,7 +23,6 @@ const productSchema = new mongoose.Schema({
     },
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: 'Category'
     },
     product_descriptions: {
@@ -35,56 +35,60 @@ const productSchema = new mongoose.Schema({
     },
     supplier_price: {
         type: Number,
-        validate(val) {
-            if (!validator.isDecimal(val)) {
-                throw new Error('invalid Supplier price!')
-            }
-        }
+        // validate(val) {
+        //     if (!validator.isDecimal(val)) {
+        //         throw new Error('invalid Supplier price!')
+        //     }
+        // }
     },
     product_price: {
         type: Number,
         required: true,
-        validate(val) {
-            if (!validator.isDecimal(val)) {
-                throw new Error('invalid Product price!')
-            }
-        }
+        // validate(val) {
+        //     if (!validator.isDecimal(val)) {
+        //         throw new Error('invalid Product price!')
+        //     }
+        // }
     },
     markup: {
         type: Number,
         required: true,
-        validate(val) {
-            if (!validator.isNumeric(val)) {
-                throw new Error('invalid Markup!')
-            }
-        }
+        // validate(val) {
+        //     if (!validator.isNumeric(val)) {
+        //         throw new Error('invalid Markup!')
+        //     }
+        // }
     },
     discount: {
         type: Number,
         required: true,
-        validate(val) {
-            if (!validator.isNumeric(val)) {
-                throw new Error('invalid Discount!')
-            }
-        }
+        // validate(val) {
+        //     if (!validator.isNumeric(val)) {
+        //         throw new Error('invalid Discount!')
+        //     }
+        // }
     },
     weight: {
         type: Number,
         required: true,
-        validate(val) {
-            if (!validator.isDecimal(val)) {
-                throw new Error('invalid Weight!')
-            }
-        }
+        // validate(val) {
+        //     if (!validator.isNumeric(val)) {
+        //         throw new Error('invalid Weight!')
+        //     }
+        // }
     },
     photos: [
         {
             photo: {
                 type: Buffer,
-                featured:{
-                    type:Boolean,
-                    default:false
-                }
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            featured: {
+                type: Boolean,
+                default: false
             }
         }
     ],
