@@ -1,9 +1,9 @@
 const router = require('express').Router()
 const Product = require('../models/product')
 const multer = require('multer')
-const tinify = require("tinify")
 
-tinify.key = process.env.TINIFY_KEY
+
+
 
 const upload = multer({
     limits: {
@@ -22,14 +22,25 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
     try {
         const product = new Product(req.body)
 
-        req.files.forEach((photo) => {
-            product.photos.push({
-                photo: photo.buffer,
+        const photos = req.files.map(async (photo) => {
+
+            const optimizedImage = await product.optimizedImage(photo.buffer)
+
+            // console.log(optimizedImage)
+            // console.log('pushed')
+
+            return {
+                // photo: photo.buffer,
+                photo: optimizedImage,
                 name: photo.originalname
-            })
+            }
+
         })
 
-        console.log(product)
+        const dataImage = await Promise.all(photos) // Promise.all return new promises
+
+        product.photos = dataImage
+
         await product.save()
 
         res.status(201).send()

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const tinify = require("tinify")
+const fs = require('fs')
 
-
+tinify.key = process.env.TINIFY_KEY
 
 // product_name
 // category_id
@@ -29,9 +31,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    supplier_name:{
-        type:String,
-        trim:true
+    supplier_name: {
+        type: String,
+        trim: true
     },
     supplier_price: {
         type: Number,
@@ -92,13 +94,43 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
-    status:{
-        type:Boolean,
-        default:false
+    status: {
+        type: Boolean,
+        default: false
     }
 
 
 })
+
+productSchema.methods.optimizedImage = async (photos) => {
+
+    //Get all req.files
+    // const optimizedImage = photos.map(photo => {
+    //     return tinify.fromBuffer(photo.buffer).toBuffer().then((data) => {
+    //         return data
+    //     }).catch((e) => {
+    //         throw e
+    //     })
+    // })
+
+    //Get array of promise using Promise.all and return array of buffer data 
+    // return Promise.all(optimizedImage).then((data) => {
+    //     return data
+    // })
+
+
+    //Get single buffer(Refactored to single call per image buffer)
+    const optimizedImage = tinify.fromBuffer(photos).toBuffer()
+
+    try {
+        const data = await optimizedImage
+        return data
+    }
+    catch (e) {
+        throw e
+    }
+
+}
 
 const Product = mongoose.model('Product', productSchema)
 
