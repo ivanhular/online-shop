@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const tinify = require("tinify")
 const fs = require('fs')
+const sharp = require('sharp')
 
 tinify.key = process.env.TINIFY_KEY
 
@@ -102,33 +103,32 @@ const productSchema = new mongoose.Schema({
 
 })
 
-productSchema.methods.optimizedImage = async (photos) => {
+productSchema.methods.optimizedImage = async (photoBuffer) => {
 
-    //Get all req.files
-    // const optimizedImage = photos.map(photo => {
-    //     return tinify.fromBuffer(photo.buffer).toBuffer().then((data) => {
-    //         return data
-    //     }).catch((e) => {
-    //         throw e
+    //Get single buffer(Refactored to single call per image buffer) - Tinyfy working state 7.52s
+    // const optimizedImage = new Promise((resolve, reject) => {
+    //     tinify.fromBuffer(photoBuffer).toBuffer(async (err, data) => {
+
+    //         if (err) {
+    //             reject(err)
+    //         }
+
+    //         resolve(data)
+
     //     })
     // })
 
-    //Get array of promise using Promise.all and return array of buffer data 
-    // return Promise.all(optimizedImage).then((data) => {
-    //     return data
-    // })
+    // const dataImage = await optimizedImage
+
+    // return dataImage
 
 
-    //Get single buffer(Refactored to single call per image buffer)
-    const optimizedImage = tinify.fromBuffer(photos).toBuffer()
+    const imageBuffer = await sharp(photoBuffer)
+        .resize(250,250)
+        .jpeg()
+        .toBuffer()
 
-    try {
-        const data = await optimizedImage
-        return data
-    }
-    catch (e) {
-        throw e
-    }
+    return imageBuffer
 
 }
 
