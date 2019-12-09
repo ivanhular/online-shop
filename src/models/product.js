@@ -103,6 +103,23 @@ const productSchema = new mongoose.Schema({
 
 })
 
+productSchema.methods.toJSON = function () {
+    const product = this
+
+    productObject = product.toObject()
+
+    // delete productObject.photos.photo
+
+    productObject.photos.forEach(photo => {
+        delete photo.photo
+    })
+    
+    // console.log(productObject.photos)
+    
+    return productObject
+
+}
+
 productSchema.methods.optimizedImage = async (photoBuffer) => {
 
     //Get single buffer(Refactored to single call per image buffer) - Tinyfy working state 7.52s
@@ -124,13 +141,17 @@ productSchema.methods.optimizedImage = async (photoBuffer) => {
 
 
     const imageBuffer = await sharp(photoBuffer)
-        .resize(250,250)
+        .resize(250, 250)
         .jpeg()
         .toBuffer()
 
     return imageBuffer
 
 }
+
+//Validate ObjectId
+productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) || false
+
 
 const Product = mongoose.model('Product', productSchema)
 

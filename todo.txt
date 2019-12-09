@@ -8,4 +8,5 @@ users
 
 Products
 - Complete products CRUD
+- Add variation
 - Image Compression & Optimization

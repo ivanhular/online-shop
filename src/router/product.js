@@ -76,9 +76,54 @@ router.get('/products/:id/:photo', async (req, res) => {
         res.status(404).send()
     }
 
+})
+
+
+//GET products 
+router.get('/products', async (req, res) => {
+    try {
+        const products = await Product.find({})
+        res.send(products)
+    } catch (e) {
+        res.status(500).send(e)
+    }
 
 })
 
+//GET product by ID
+router.get('/products/:id', async (req, res) => {
+
+    const product = await Product.isValidID(req.params.id) ? await Product.findById(req.params.id) : ""
+
+    try {
+
+        if (!product) {
+            return res.status(404).send()
+        }
+
+        res.send(product)
+
+    } catch (e) {
+        res.status(500).send(e)
+    }
+
+})
+
+//PATCH product by ID
+router.patch('/products/:id', async (req, res) => {
+
+    const product = await Product.findById(req.params.id)
+
+    try {
+        if (!product) {
+            return res.status(404).send()
+        }
+        res.send(product)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+
+})
 
 
 module.exports = router
