@@ -113,44 +113,43 @@ productSchema.methods.toJSON = function () {
     productObject.photos.forEach(photo => {
         delete photo.photo
     })
-    
+
     // console.log(productObject.photos)
-    
+
     return productObject
 
 }
 
-productSchema.methods.optimizedImage = async (photoBuffer) => {
+productSchema.methods.saveOptimizedImage = async function (files) {
 
-    //Get single buffer(Refactored to single call per image buffer) - Tinyfy working state 7.52s
-    // const optimizedImage = new Promise((resolve, reject) => {
-    //     tinify.fromBuffer(photoBuffer).toBuffer(async (err, data) => {
+    const product = this
 
-    //         if (err) {
-    //             reject(err)
-    //         }
+    const photos = files.map(async (photo) => {
 
-    //         resolve(data)
+        // const optimizedImage = await product.optimizedImage(photo.buffer)
 
-    //     })
-    // })
-
-    // const dataImage = await optimizedImage
-
-    // return dataImage
-
-
-    const imageBuffer = await sharp(photoBuffer)
+        const imageBuffer = await sharp(photo.buffer)
         .resize(250, 250)
         .jpeg()
         .toBuffer()
 
-    return imageBuffer
+        return {
+            // photo: photo.buffer,
+            photo: imageBuffer,
+            name: photo.originalname
+        }
 
+    })
+
+    const dataImage = await Promise.all(photos) // Promise.all return new promises
+
+    // console.log(dataImage)
+
+    product.photos = dataImage
 }
 
 //Validate ObjectId
-productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) || false
+productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ?  await Product.findById(_id) : ""
 
 
 const Product = mongoose.model('Product', productSchema)

@@ -1,12 +1,16 @@
 users 
-- CRUD
+- CRUD (DONE)
 - Login / authentication
-
-- User role
+- User role / Level
 - Token Expiration
 
 
 Products
-- Complete products CRUD
+- Complete products CRUD (DONE)
+- Image Compression & Optimization(DONE)
+- Authentication Middleware
 - Add variation
-- Image Compression & Optimization
+
+
+
+Transaction

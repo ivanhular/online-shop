@@ -22,24 +22,7 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
     try {
         const product = new Product(req.body)
 
-        const photos = req.files.map(async (photo) => {
-
-            const optimizedImage = await product.optimizedImage(photo.buffer)
-
-            // console.log(optimizedImage)
-            // console.log('pushed')
-
-            return {
-                // photo: photo.buffer,
-                photo: optimizedImage,
-                name: photo.originalname
-            }
-
-        })
-
-        const dataImage = await Promise.all(photos) // Promise.all return new promises
-
-        product.photos = dataImage
+        await product.saveOptimizedImage(req.files)
 
         await product.save()
 
@@ -110,20 +93,69 @@ router.get('/products/:id', async (req, res) => {
 })
 
 //PATCH product by ID
-router.patch('/products/:id', async (req, res) => {
+router.patch('/products/:id', upload.array('photos', 12), async (req, res) => {
 
-    const product = await Product.findById(req.params.id)
+    const product = await Product.isValidID(req.params.id)
+
+    const allowedUpdates = [
+        'status',
+        'product_name',
+        'product_descriptions',
+        'markup',
+        'discount',
+        'weight',
+        'supplier_name',
+        'product_price'
+    ]
+    const isAllowedUpdate = Object.keys(req.body).every(update => allowedUpdates.includes(update))
+
+    // console.log(Object.keys(req.body))
 
     try {
+
         if (!product) {
             return res.status(404).send()
         }
+
+        if (!isAllowedUpdate) {
+            return res.status(400).send()
+        }
+
+        Object.keys(req.body).forEach(update => {
+            product[update] = req.body[update]
+        })
+
+        await product.saveOptimizedImage(req.files)
+
+        await product.save()
+
         res.send(product)
+
     } catch (e) {
         res.status(500).send(e)
     }
 
 })
 
+
+//DELETE product by ID 
+router.delete('/products/:id', async (req, res) => {
+
+    const product = await Product.isValidID(req.params.id)
+
+    try {
+
+        if (!product) {
+            res.status(404).send()
+        }
+
+        await product.remove()
+
+        res.send(product)
+
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
 
 module.exports = router
