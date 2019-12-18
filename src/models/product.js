@@ -4,7 +4,7 @@ const tinify = require("tinify")
 const fs = require('fs')
 const sharp = require('sharp')
 
-tinify.key = process.env.TINIFY_KEY
+// tinify.key = process.env.TINIFY_KEY
 
 // product_name
 // category_id
@@ -37,48 +37,23 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
     supplier_price: {
-        type: Number,
-        // validate(val) {
-        //     if (!validator.isDecimal(val)) {
-        //         throw new Error('invalid Supplier price!')
-        //     }
-        // }
+        type: Number
     },
     product_price: {
         type: Number,
-        required: true,
-        // validate(val) {
-        //     if (!validator.isDecimal(val)) {
-        //         throw new Error('invalid Product price!')
-        //     }
-        // }
+        required: true
     },
     markup: {
         type: Number,
-        required: true,
-        // validate(val) {
-        //     if (!validator.isNumeric(val)) {
-        //         throw new Error('invalid Markup!')
-        //     }
-        // }
+        required: true
     },
     discount: {
         type: Number,
-        required: true,
-        // validate(val) {
-        //     if (!validator.isNumeric(val)) {
-        //         throw new Error('invalid Discount!')
-        //     }
-        // }
+        required: true
     },
     weight: {
         type: Number,
-        required: true,
-        // validate(val) {
-        //     if (!validator.isNumeric(val)) {
-        //         throw new Error('invalid Weight!')
-        //     }
-        // }
+        required: true
     },
     photos: [
         {
