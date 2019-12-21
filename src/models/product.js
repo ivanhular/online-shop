@@ -18,6 +18,12 @@ const sharp = require('sharp')
 // supplier
 // status
 
+// const variationSchema = new mongoose.Schema({
+//     option: {
+//         type: String
+//     }
+// })
+
 const productSchema = new mongoose.Schema({
     product_name: {
         type: String,
@@ -70,6 +76,16 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
+    variations: [
+        {
+            option: {
+                type: String
+            },
+            price:{
+                type:Number
+            }
+        }
+    ],
     status: {
         type: Boolean,
         default: false
@@ -104,9 +120,9 @@ productSchema.methods.saveOptimizedImage = async function (files) {
         // const optimizedImage = await product.optimizedImage(photo.buffer)
 
         const imageBuffer = await sharp(photo.buffer)
-        .resize(250, 250)
-        .jpeg()
-        .toBuffer()
+            .resize(250, 250)
+            .jpeg()
+            .toBuffer()
 
         return {
             // photo: photo.buffer,
@@ -124,7 +140,7 @@ productSchema.methods.saveOptimizedImage = async function (files) {
 }
 
 //Validate ObjectId
-productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ?  await Product.findById(_id) : ""
+productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""
 
 
 const Product = mongoose.model('Product', productSchema)

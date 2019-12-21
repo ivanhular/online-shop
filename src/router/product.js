@@ -24,9 +24,13 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
 
         await product.saveOptimizedImage(req.files)
 
+        product.variations = JSON.parse(req.body.variations)
+
         await product.save()
 
-        res.status(201).send()
+        console.log(product)
+
+        res.status(201).send(product)
 
     } catch (e) {
 
