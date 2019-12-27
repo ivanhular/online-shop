@@ -10,6 +10,7 @@ Products
 - Image Compression & Optimization(DONE)
 - Authentication Middleware
 - Add variation
+- Filter(Segment,Category,Newly Created)
 
 
 

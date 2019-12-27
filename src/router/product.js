@@ -41,7 +41,8 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
     res.status(400).send({ error: error.message }) // handle the error of multer
 })
 
-//Serve product image
+
+//Serve  image
 router.get('/products/:id/:photo', async (req, res) => {
 
     try {
@@ -65,7 +66,10 @@ router.get('/products/:id/:photo', async (req, res) => {
 
 })
 
-
+// GET /products?status=true
+// GET /products?category=shoes
+// GET /products?segment=kids
+// GET /products?sortBy=createdAt:desc
 //GET products 
 router.get('/products', async (req, res) => {
     try {
