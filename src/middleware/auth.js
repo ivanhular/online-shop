@@ -25,5 +25,21 @@ const auth = async (req, res, next) => {
     }
 }
 
+const isAdmin = async (req, res, next) => {
+    try {
 
-module.exports = auth
+        if(!req.user.role){
+            throw new Error()
+        }
+
+        next()
+        
+    } catch (e) {
+        res.status(401).send({ error: 'Unauthorized Access!' })
+    }
+}
+
+module.exports = {
+    auth,
+    isAdmin
+}

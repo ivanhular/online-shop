@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const Product = require('../models/product')
+const Category = require('../models/category')
+const Segment = require('../models/segment')
 const multer = require('multer')
 
 
@@ -164,6 +166,12 @@ router.delete('/products/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send(e)
     }
+})
+
+
+//POST Segment
+router.post('/products/segments', async (req, res) => {
+
 })
 
 module.exports = router

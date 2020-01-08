@@ -3,6 +3,7 @@ users
 - Login / authentication
 - User role / Level
 - Token Expiration
+- Sessions
 
 
 Products
@@ -15,3 +16,4 @@ Products
 
 
 Transaction
+-Payment methods
