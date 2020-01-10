@@ -27,7 +27,7 @@ router.post('/users', async (req, res) => {
 })
 
 //GET all users
-router.get('/users', auth, async (req, res) => {
+router.get('/users', async (req, res) => {
 
     const users = await User.find({})
 
