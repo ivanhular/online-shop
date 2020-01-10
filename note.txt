@@ -1,2 +1,8 @@
 https://flaviocopes.com/how-to-serve-react-from-same-origin/
 https://savvyapps.com/blog/how-to-build-restful-api-mobile-app
+
+
+
+Heroku
+https://devcenter.heroku.com/articles/config-vars 
+https://devcenter.heroku.com/articles/getting-started-with-nodejs

@@ -20,35 +20,13 @@ const upload = multer({
 })
 
 //CREATE product
-// router.post('/products', upload.array('photos', 12), async (req, res) => {
-//     try {
-//         const product = new Product(req.body)
-
-//         await product.saveOptimizedImage(req.files)
-
-//         product.variations = JSON.parse(req.body.variations)
-
-//         await product.save()
-
-//         console.log(product)
-
-//         res.status(201).send(product)
-
-//     } catch (e) {
-
-//         res.status(400).send(e)
-
-//     }
-// }, (error, req, res, next) => {
-//     res.status(400).send({ error: error.message }) // handle the error of multer
-// })
 router.post('/products', upload.array('photos', 12), async (req, res) => {
     try {
         const product = new Product(req.body)
 
         await product.saveOptimizedImage(req.files)
 
-        // product.variations = JSON.parse(req.body.variations)
+        product.variations = JSON.parse(req.body.variations)
 
         await product.save()
 
@@ -61,6 +39,8 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
         res.status(400).send(e)
 
     }
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message }) // handle the error of multer
 })
 
 
