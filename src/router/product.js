@@ -20,13 +20,35 @@ const upload = multer({
 })
 
 //CREATE product
+// router.post('/products', upload.array('photos', 12), async (req, res) => {
+//     try {
+//         const product = new Product(req.body)
+
+//         await product.saveOptimizedImage(req.files)
+
+//         product.variations = JSON.parse(req.body.variations)
+
+//         await product.save()
+
+//         console.log(product)
+
+//         res.status(201).send(product)
+
+//     } catch (e) {
+
+//         res.status(400).send(e)
+
+//     }
+// }, (error, req, res, next) => {
+//     res.status(400).send({ error: error.message }) // handle the error of multer
+// })
 router.post('/products', upload.array('photos', 12), async (req, res) => {
     try {
         const product = new Product(req.body)
 
         await product.saveOptimizedImage(req.files)
 
-        product.variations = JSON.parse(req.body.variations)
+        // product.variations = JSON.parse(req.body.variations)
 
         await product.save()
 
@@ -39,8 +61,6 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
         res.status(400).send(e)
 
     }
-}, (error, req, res, next) => {
-    res.status(400).send({ error: error.message }) // handle the error of multer
 })
 
 
@@ -74,12 +94,12 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?sortBy=createdAt:desc
 //GET products 
 router.get('/products', async (req, res) => {
-    // try {
+    try {
         const products = await Product.find({})
         res.send(products)
-    // } catch (e) {
-    //     res.status(500).send(e)
-    // }
+    } catch (e) {
+        res.status(500).send(e)
+    }
 
 })
 

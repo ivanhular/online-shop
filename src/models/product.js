@@ -115,28 +115,38 @@ productSchema.methods.saveOptimizedImage = async function (files) {
 
     const product = this
 
-    const photos = files.map(async (photo) => {
+    try {
+        const photos = files.map(async (photo) => {
 
-        // const optimizedImage = await product.optimizedImage(photo.buffer)
+            // const optimizedImage = await product.optimizedImage(photo.buffer)
 
-        const imageBuffer = await sharp(photo.buffer)
-            .resize(250, 250)
-            .jpeg()
-            .toBuffer()
+            const imageBuffer = await sharp(photo.buffer)
+                .resize(250, 250)
+                .jpeg()
+                .toBuffer()
 
-        return {
-            // photo: photo.buffer,
-            photo: imageBuffer,
-            name: photo.originalname
-        }
+            return {
+                // photo: photo.buffer,
+                photo: imageBuffer,
+                name: photo.originalname
+            }
 
-    })
+        })
 
-    const dataImage = await Promise.all(photos) // Promise.all return new promises
+        const dataImage = await Promise.all(photos) // Promise.all return new promises
 
-    // console.log(dataImage)
+        // console.log(dataImage)
 
-    product.photos = dataImage
+        product.photos = dataImage
+
+    } catch (e) {
+        
+        throw new Error(e)
+
+    }
+
+
+
 }
 
 //Validate ObjectId

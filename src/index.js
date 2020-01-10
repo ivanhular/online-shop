@@ -6,7 +6,7 @@ const productRouter = require('./router/product')
 const segmentRouter = require('./router/segment')
 const categoryRouter = require('./router/category')
 
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 5000
 
 const app = express()
 // app.use(session({

@@ -6,7 +6,7 @@ const router = express.Router()
 
 
 //POST Users
-router.post('/users', [auth, isAdmin], async (req, res) => {
+router.post('/users', async (req, res) => {
 
     const user = new User(req.body)
 
