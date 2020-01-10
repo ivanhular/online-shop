@@ -2,9 +2,9 @@ const express = require('express')
 // const session = require('express-session');
 require('./db/mongoose')
 const userRouter = require('./router/user')
-const categoryRouter = require('./router/product')
+const productRouter = require('./router/product')
 const segmentRouter = require('./router/segment')
-const productRouter = require('./router/category')
+const categoryRouter = require('./router/category')
 
 const port = process.env.PORT || 4000
 
