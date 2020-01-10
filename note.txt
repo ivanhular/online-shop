@@ -1,0 +1,2 @@
+https://flaviocopes.com/how-to-serve-react-from-same-origin/
+https://savvyapps.com/blog/how-to-build-restful-api-mobile-app

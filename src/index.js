@@ -1,5 +1,5 @@
 const express = require('express')
-const session = require('express-session');
+// const session = require('express-session');
 require('./db/mongoose')
 const userRouter = require('./router/user')
 const categoryRouter = require('./router/product')
