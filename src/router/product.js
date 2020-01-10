@@ -74,12 +74,12 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?sortBy=createdAt:desc
 //GET products 
 router.get('/products', async (req, res) => {
-    try {
+    // try {
         const products = await Product.find({})
         res.send(products)
-    } catch (e) {
-        res.status(500).send(e)
-    }
+    // } catch (e) {
+    //     res.status(500).send(e)
+    // }
 
 })
 
