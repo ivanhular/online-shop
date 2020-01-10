@@ -31,9 +31,13 @@ const isAdmin = async (req, res, next) => {
         if(!req.user.role){
             throw new Error()
         }
-
-        next()
         
+        if (req.user.role !== 'admin' || req.user.role !== 'owner'){
+            throw new Error()
+        }
+        
+        next()
+
     } catch (e) {
         res.status(401).send({ error: 'Unauthorized Access!' })
     }
