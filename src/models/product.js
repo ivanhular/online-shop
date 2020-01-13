@@ -1,28 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const tinify = require("tinify")
 const fs = require('fs')
-const sharp = require('sharp')
 
-// tinify.key = process.env.TINIFY_KEY
-
-// product_name
-// category_id
-// product_descriptions
-// supplier_price
-// product_price
-// markup(%)
-// discount( !< markup %)
-// weight
-// photos[]
-// supplier
-// status
-
-// const variationSchema = new mongoose.Schema({
-//     option: {
-//         type: String
-//     }
-// })
 
 const productSchema = new mongoose.Schema({
     product_name: {
@@ -81,8 +60,8 @@ const productSchema = new mongoose.Schema({
             option: {
                 type: String
             },
-            price:{
-                type:Number
+            price: {
+                type: Number
             }
         }
     ],
@@ -111,43 +90,6 @@ productSchema.methods.toJSON = function () {
 
 }
 
-productSchema.methods.saveOptimizedImage = async function (files) {
-
-    const product = this
-
-    try {
-        const photos = files.map(async (photo) => {
-
-            // const optimizedImage = await product.optimizedImage(photo.buffer)
-
-            const imageBuffer = await sharp(photo.buffer)
-                .resize(250, 250)
-                .jpeg()
-                .toBuffer()
-
-            return {
-                // photo: photo.buffer,
-                photo: imageBuffer,
-                name: photo.originalname
-            }
-
-        })
-
-        const dataImage = await Promise.all(photos) // Promise.all return new promises
-
-        // console.log(dataImage)
-
-        product.photos = dataImage
-
-    } catch (e) {
-        
-        throw new Error(e)
-
-    }
-
-
-
-}
 
 //Validate ObjectId
 productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""

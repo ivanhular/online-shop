@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 const categorySchema = new mongoose.Schema({
     category_name: {
         type: String,
-        unique:true,
+        unique: true,
         required: true,
-        lowercase:true,
-        trim:true
+        lowercase: true,
+        trim: true
     },
     photos: [
         {
@@ -25,6 +25,23 @@ const categorySchema = new mongoose.Schema({
         }
     ]
 })
+
+categorySchema.methods.toJSON = function () {
+
+    const category = this
+
+    categoryObject = category.toObject()
+
+    categoryObject.photos.forEach(photo => {
+
+        delete photo.photo
+
+    })
+
+
+    return categoryObject
+
+}
 
 //Validate ObjectId
 categorySchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Category.findById(_id) : ""

@@ -2,31 +2,24 @@ const router = require('express').Router()
 const Product = require('../models/product')
 const Category = require('../models/category')
 const Segment = require('../models/segment')
-const multer = require('multer')
+const { upload, saveOptimizedImage } = require('../utils/utils')
 
-
-
-
-const upload = multer({
-    limits: {
-        fieldSize: 1000000
-    },
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) {
-            return cb(new Error('Please Upload Image Only!'))
-        }
-        cb(undefined, true)
-    }
-})
 
 //CREATE product
 router.post('/products', upload.array('photos', 12), async (req, res) => {
+
+    const product = new Product(req.body)
+
     try {
-        const product = new Product(req.body)
 
-        await product.saveOptimizedImage(req.files)
+        await saveOptimizedImage(product, req.files)
+        console.log(req.body.variations)
 
-        product.variations = JSON.parse(req.body.variations)
+        if (req.body.variations) {
+
+            product.variations = JSON.parse(req.body.variations)
+
+        }
 
         await product.save()
 

@@ -1,7 +1,7 @@
 users 
 - CRUD (DONE)
 - Login / authentication
-- User role / Level
+- User role / Level / Owner role
 - Token Expiration
 - Sessions
 
@@ -12,8 +12,30 @@ Products
 - Authentication Middleware
 - Add variation
 - Filter(Segment,Category,Newly Created)
-
+- Dynamic content-type for image rendering
 
 
 Transaction
 -Payment methods
+
+
+Segments / Category
+//retun categories base on segment ID relationed to categories
+-GET /segments/:id - return object of categories
+
+//Update endpoint for saving foreign key of segmentID
+-POST /categories
+
+//Create End point that returns product base on selected segment and category
+-GET /products/:segmentID/:categoryID
+
+//Update endpoint for saving foreign key of segmentID
+-POST /products
+
+
+Search 
+- Create a flexible search endpoint https://code.tutsplus.com/tutorials/full-text-search-in-mongodb--cms-24835
+
+
+
+

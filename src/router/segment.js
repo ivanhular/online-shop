@@ -1,20 +1,21 @@
 const router = require('express').Router()
 const Segment = require('../models/segment')
-const { getObjectProps } = require('../utils/utils')
+const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
 
 //Create Segment
-router.post('/segments', async (req, res) => {
+router.post('/segments', upload.array('photos', 12), async (req, res) => {
+
+    const segment = new Segment(req.body)
 
     try {
 
-        const segment = new Segment(req.body)
+        await saveOptimizedImage(segment, req.files)
 
-        // await segment.save()
-        console.log(req.session)
+        await segment.save()
 
-        res.send(req.session)
+        res.send(segment)
 
     } catch (e) {
 

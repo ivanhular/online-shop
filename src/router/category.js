@@ -1,14 +1,16 @@
 const router = require('express').Router()
 const Category = require('../models/category')
-const { getObjectProps } = require('../utils/utils')
+const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
 //Create Category
-router.post('/categories', async (req, res) => {
+router.post('/categories', upload.array('photos', 12), async (req, res) => {
+
+    const category = new Category(req.body)
 
     try {
 
-        const category = new Category(req.body)
+        await saveOptimizedImage(category, req.files)
 
         await category.save()
 
@@ -36,6 +38,27 @@ router.get('/categories', async (req, res) => {
         res.status(500).send(e)
     }
 
+})
+
+//Serve category Image/s
+router.get('/categories/:id/:photo', async (req, res) => {
+    try {
+        const category = await Category.findById(req.params.id)
+
+        if (!category) {
+            throw new Error()
+        }
+
+        const photo = category.photos.find(photo => photo.name === req.params.photo)
+
+        res.set('content-type', 'image/jpeg')
+
+        res.send(photo.photo)
+
+
+    } catch (e) {
+        res.status(404).send(e)
+    }
 })
 
 //PATCH
