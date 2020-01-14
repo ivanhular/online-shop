@@ -10,10 +10,10 @@ Products
 - Complete products CRUD (DONE)
 - Image Compression & Optimization(DONE)
 - Authentication Middleware
-- Add variation
+- Add variation(DONE)
 - Filter(Segment,Category,Newly Created)
-- Dynamic content-type for image rendering
-- allow updates of photos
+- Dynamic content-type for image rendering(DONE)
+- allow updates of photos(DONE)
 
 Transaction
 -Payment methods
