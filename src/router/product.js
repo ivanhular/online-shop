@@ -2,7 +2,7 @@ const router = require('express').Router()
 const Product = require('../models/product')
 const Category = require('../models/category')
 const Segment = require('../models/segment')
-const { upload, saveOptimizedImage } = require('../utils/utils')
+const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
 //CREATE product
@@ -79,7 +79,7 @@ router.get('/products', async (req, res) => {
 //GET product by ID
 router.get('/products/:id', async (req, res) => {
 
-    const product = await Product.isValidID(req.params.id) ? await Product.findById(req.params.id) : ""
+    const product = await Product.isValidID(req.params.id)
 
     try {
 
@@ -100,17 +100,8 @@ router.patch('/products/:id', upload.array('photos', 12), async (req, res) => {
 
     const product = await Product.isValidID(req.params.id)
 
-    const allowedUpdates = [
-        'status',
-        'product_name',
-        'product_descriptions',
-        'markup',
-        'discount',
-        'weight',
-        'supplier_name',
-        'product_price'
-    ]
-    const isAllowedUpdate = Object.keys(req.body).every(update => allowedUpdates.includes(update))
+    const allowedUpdates = getObjectProps(Product.schema.paths)
+    const isAllowedUpdate = getObjectProps(req.body).every(update => allowedUpdates.includes(update))
 
     // console.log(Object.keys(req.body))
 
@@ -124,11 +115,11 @@ router.patch('/products/:id', upload.array('photos', 12), async (req, res) => {
             return res.status(400).send()
         }
 
-        Object.keys(req.body).forEach(update => {
+        await saveOptimizedImage(product, req.files)
+
+        getObjectProps(req.body).forEach(update => {
             product[update] = req.body[update]
         })
-
-        await product.saveOptimizedImage(req.files)
 
         await product.save()
 
