@@ -17,6 +17,10 @@ const segmentSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
+            mimetype: {
+                type: String,
+                required: true
+            },
             featured: {
                 type: Boolean,
                 default: false
@@ -24,6 +28,13 @@ const segmentSchema = new mongoose.Schema({
         }
     ]
 })
+
+segmentSchema.virtual('categoriesBysegment', {
+    ref: 'Category', //Model name to reference
+    localField: '_id', //local identifier
+    foreignField: 'segment_id.segment_id' // foreign key from the relationed model
+})
+
 
 segmentSchema.methods.toJSON = function () {
 

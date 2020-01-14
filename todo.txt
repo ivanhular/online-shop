@@ -13,7 +13,7 @@ Products
 - Add variation
 - Filter(Segment,Category,Newly Created)
 - Dynamic content-type for image rendering
-
+- allow updates of photos
 
 Transaction
 -Payment methods
@@ -21,6 +21,7 @@ Transaction
 
 Segments / Category
 //retun categories base on segment ID relationed to categories
+//create virtual for categoriesBysegment 
 -GET /segments/:id - return object of categories
 
 //Update endpoint for saving foreign key of segmentID

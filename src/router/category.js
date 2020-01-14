@@ -12,6 +12,8 @@ router.post('/categories', upload.array('photos', 12), async (req, res) => {
 
         await saveOptimizedImage(category, req.files)
 
+        category.segment_id = JSON.parse(req.body.segment_id)
+
         await category.save()
 
         res.send(category)
@@ -51,7 +53,7 @@ router.get('/categories/:id/:photo', async (req, res) => {
 
         const photo = category.photos.find(photo => photo.name === req.params.photo)
 
-        res.set('content-type', 'image/jpeg')
+        res.set('content-type', photo.mimetype)
 
         res.send(photo.photo)
 
@@ -62,7 +64,7 @@ router.get('/categories/:id/:photo', async (req, res) => {
 })
 
 //PATCH
-router.patch('/categories/:id', async (req, res) => {
+router.patch('/categories/:id', upload.array('photos', 12), async (req, res) => {
     try {
 
         const category = await Category.isValidID(req.params.id)
@@ -72,16 +74,21 @@ router.patch('/categories/:id', async (req, res) => {
         if (!category) {
             return res.status(404).send()
         }
+
         if (!isValidUpdate) {
             return res.status(400).send()
         }
+
+        await saveOptimizedImage(category, req.files)
 
         getObjectProps(req.body).forEach(update => {
             category[update] = req.body[update]
         })
 
+        category.segment_id = JSON.parse(req.body.segment_id)
+
         await category.save()
-        // console.log(req.params.id)
+
         res.send(category)
 
     } catch (e) {

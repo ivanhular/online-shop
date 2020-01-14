@@ -13,7 +13,7 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
     try {
 
         await saveOptimizedImage(product, req.files)
-        console.log(req.body.variations)
+        // console.log(req.body.variations)
 
         if (req.body.variations) {
 
@@ -48,9 +48,9 @@ router.get('/products/:id/:photo', async (req, res) => {
             throw new Error()
         }
 
-        res.set('Content-type', 'image/jpeg')
-
         const photo = product.photos.find((photo) => photo.name === req.params.photo)
+
+        res.set('Content-type', photo.mimetype)
 
         res.send(photo.photo)
         // console.log()

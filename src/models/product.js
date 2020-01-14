@@ -13,6 +13,10 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
     },
+    segment_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Segment'
+    },
     product_descriptions: {
         type: String,
         trim: true
@@ -49,6 +53,10 @@ const productSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
+            mimetype: {
+                type: String,
+                required: true
+            },
             featured: {
                 type: Boolean,
                 default: false
@@ -70,7 +78,8 @@ const productSchema = new mongoose.Schema({
         default: false
     }
 
-
+}, {
+    timestamps: true //set Schema Model options
 })
 
 productSchema.methods.toJSON = function () {

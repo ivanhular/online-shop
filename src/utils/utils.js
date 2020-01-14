@@ -26,10 +26,13 @@ const saveOptimizedImage = async function (modelObj,files) { //params Model and 
                 .jpeg()
                 .toBuffer()
 
+                // console.log(photo)
+
             return {
                 // photo: photo.buffer,
                 photo: imageBuffer,
-                name: photo.originalname
+                name: photo.originalname,
+                mimetype: photo.mimetype
             }
 
         })

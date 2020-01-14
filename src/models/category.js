@@ -9,12 +9,23 @@ const categorySchema = new mongoose.Schema({
         lowercase: true,
         trim: true
     },
+    segment_id: [{
+        segment_id: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Segment',
+            required: true
+        }
+    }],
     photos: [
         {
             photo: {
                 type: Buffer,
             },
             name: {
+                type: String,
+                required: true
+            },
+            mimetype: {
                 type: String,
                 required: true
             },
@@ -43,7 +54,7 @@ categorySchema.methods.toJSON = function () {
 
 }
 
-//Validate ObjectId
+//Validate ObjectId and return data by objectID
 categorySchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Category.findById(_id) : ""
 
 
