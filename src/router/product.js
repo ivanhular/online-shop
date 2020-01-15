@@ -79,7 +79,7 @@ router.get('/products', async (req, res) => {
         limit.limit = req.query.limit
     }
     if (req.query.sortBy) {
-        const parts = req.query.sort.split(":")
+        const parts = req.query.sortBy.split(":")
         sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
     }
     if (req.query.segmentid) {
