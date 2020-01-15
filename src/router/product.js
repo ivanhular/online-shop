@@ -62,18 +62,44 @@ router.get('/products/:id/:photo', async (req, res) => {
 })
 
 // GET /products?status=true
-// GET /products?category=shoes
-// GET /products?segment=kids
 // GET /products?sortBy=createdAt:desc
+// GET /products?segmentid=id&categoryid=id
 //GET products 
 router.get('/products', async (req, res) => {
+
+    const limit = {
+        limit: 20
+    }
+    const sort = {
+        createdAt: 1
+    }
+    const match = {}
+
+    if (req.query.limit) {
+        limit.limit = req.query.limit
+    }
+    if (req.query.sortBy) {
+        const parts = req.query.sort.split(":")
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+    }
+    if (req.query.segmentid) {
+        match.segment_id = req.query.segmentid
+    }
+    if (req.query.segmentid) {
+        match.category_id = req.query.categoryid
+    }
+
     try {
-        const products = await Product.find({})
+
+        const products = await Product.find(match, null, {
+            limit,
+            sort
+        })
+
         res.send(products)
     } catch (e) {
         res.status(500).send(e)
     }
-
 })
 
 //GET product by ID
