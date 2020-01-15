@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const mongoose = require('mongoose')
 const Product = require('../models/product')
 const Category = require('../models/category')
 const Segment = require('../models/segment')
@@ -22,8 +23,6 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
         }
 
         await product.save()
-
-        console.log(product)
 
         res.status(201).send(product)
 
@@ -64,39 +63,63 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?status=true
 // GET /products?sortBy=createdAt:desc
 // GET /products?segmentid=id&categoryid=id
-//GET products 
+// GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortBy=createdAt:desc&limit=0&skip=1
+// GET products 
 router.get('/products', async (req, res) => {
 
+    const match = {}
     const limit = {
         limit: 20
     }
     const sort = {
-        createdAt: 1
+        createdAt: -1
     }
-    const match = {}
-
-    if (req.query.limit) {
-        limit.limit = req.query.limit
-    }
-    if (req.query.sortBy) {
-        const parts = req.query.sortBy.split(":")
-        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
-    }
-    if (req.query.segmentid) {
-        match.segment_id = req.query.segmentid
-    }
-    if (req.query.segmentid) {
-        match.category_id = req.query.categoryid
-    }
+    const skip = {}
 
     try {
+        // console.log(mongoose.Types.ObjectId.isValid(req.query.segmentid))
+
+        if (req.query.limit) {
+            limit.limit = parseInt(req.query.limit)
+        }
+
+        if (req.query.skip) {
+            skip.skip = parseInt(req.query.skip)
+        }
+
+        if (req.query.sortBy) {
+            const parts = req.query.sortBy.split(":")
+            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+        }
+
+        if (req.query.status) {
+            match.status = req.query.status
+        }
+
+        if (req.query.segmentid) {
+            if (!mongoose.Types.ObjectId.isValid(req.query.segmentid)) {
+                return res.status(404).send()
+            }
+            match.segment_id = req.query.segmentid
+        }
+
+
+        if (req.query.categoryid) {
+            if (!mongoose.Types.ObjectId.isValid(req.query.categoryid)) {
+                return res.status(404).send()
+            }
+            match.category_id = req.query.categoryid
+        }
+
 
         const products = await Product.find(match, null, {
-            limit,
+            limit: limit.limit,
+            skip: skip.skip,
             sort
         })
 
         res.send(products)
+
     } catch (e) {
         res.status(500).send(e)
     }
