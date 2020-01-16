@@ -9,6 +9,9 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    featured:{
+        type:Boolean
+    },
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
@@ -65,12 +68,19 @@ const productSchema = new mongoose.Schema({
     ],
     variations: [
         {
-            option: {
-                type: String
-            },
-            price: {
-                type: Number
+            priceOption: {
+
+                option: {
+                    type: String,
+                    required: true
+                },
+                price: {
+                    type: Number,
+                    required: true
+                }
+
             }
+
         }
     ],
     status: {
@@ -108,3 +118,24 @@ const Product = mongoose.model('Product', productSchema)
 
 
 module.exports = Product
+
+
+
+// [
+//     {
+//         "priceOptions": [
+//             {
+//                 "variation": "Red",
+//                 "options": [
+//                     {
+//                         "option": "sm",
+//                         "price": 200,
+//                         "old_price": 100
+//                     }
+
+//                 ]
+//             }
+//         ]
+//     }
+
+// ]
