@@ -9,8 +9,8 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    featured:{
-        type:Boolean
+    featured: {
+        type: Boolean
     },
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -68,20 +68,31 @@ const productSchema = new mongoose.Schema({
     ],
     variations: [
         {
-            priceOption: {
+            priceOption: [
+                {
+                    options: [
+                        {
+                            option: {
+                                type: String,
+                                required: true
+                            },
+                            price: {
+                                type: Number,
+                                required: true
+                            },
+                            old_price: {
+                                type: Number,
+                                required: true
+                            }
+                        }
 
-                option: {
-                    type: String,
-                    required: true
-                },
-                price: {
-                    type: Number,
-                    required: true
+                    ]
+
                 }
-
-            }
+            ]
 
         }
+
     ],
     status: {
         type: Boolean,
