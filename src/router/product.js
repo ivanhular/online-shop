@@ -144,6 +144,38 @@ router.get('/products/:id', async (req, res) => {
 
 })
 
+router.post('/products/search', async (req, res) => {
+    try {
+        console.log(req.body.search)
+
+        if (!req.body.search) {
+            return res.status(404).send({ message: 'Enter Search Keyword' })
+        }
+
+        const searchResult = await Product.find({
+            $text: {
+                $search: `${req.body.search}`
+            }
+        },
+            {
+                score: { $meta: "textScore" }
+                // product_name:{
+                //     $regex:/tshirts/
+                // }
+            }).sort( { score: { $meta: "textScore" } } )
+
+        if (searchResult.length === 0) {
+            return res.send({ message: 'No result Found' })
+        }
+        // .explain('executionStats')
+
+        res.send(searchResult)
+
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
 //PATCH product by ID
 router.patch('/products/:id', upload.array('photos', 12), async (req, res) => {
 
@@ -203,8 +235,8 @@ router.delete('/products/:id', async (req, res) => {
 
 
 //POST Segment
-router.post('/products/segments', async (req, res) => {
+// router.post('/products/segments', async (req, res) => {
 
-})
+// })
 
 module.exports = router

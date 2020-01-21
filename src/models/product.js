@@ -68,7 +68,7 @@ const productSchema = new mongoose.Schema({
     ],
     variations: [
         {
-            priceOption: [
+            priceOptions: [
                 {
                     options: [
                         {
@@ -120,6 +120,7 @@ productSchema.methods.toJSON = function () {
 
 }
 
+productSchema.index({ product_name: 'text' })
 
 //Validate ObjectId
 productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""
