@@ -109,10 +109,12 @@ productSchema.methods.toJSON = function () {
     productObject = product.toObject()
 
     // delete productObject.photos.photo
+    if (productObject.photos) {
+        productObject.photos.forEach(photo => {
+            delete photo.photo
+        })
+    }
 
-    productObject.photos.forEach(photo => {
-        delete photo.photo
-    })
 
     // console.log(productObject.photos)
 

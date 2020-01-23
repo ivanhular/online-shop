@@ -146,29 +146,28 @@ router.get('/products/:id', async (req, res) => {
 
 router.post('/products/search', async (req, res) => {
     try {
-        console.log(req.body.search)
 
         if (!req.body.search) {
             return res.status(404).send({ message: 'Enter Search Keyword' })
         }
 
+        const regex = new RegExp(req.body.search, 'i')
+
         const searchResult = await Product.find({
-            $text: {
-                $search: `${req.body.search}`
-            }
-        },
-            {
-                score: { $meta: "textScore" }
-                // product_name:{
-                //     $regex:/tshirts/
-                // }
-            }).sort( { score: { $meta: "textScore" } } )
+
+            product_name: regex
+
+        }, 'product_name', {
+            limit: 20
+        })
+
+        // .explain()
 
         if (searchResult.length === 0) {
             return res.send({ message: 'No result Found' })
         }
-        // .explain('executionStats')
-
+        // // .explain('executionStats')
+        // console.log(searchResult)
         res.send(searchResult)
 
     } catch (e) {
