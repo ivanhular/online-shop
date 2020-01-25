@@ -47,49 +47,43 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    photos: [
-        {
-            photo: {
-                type: Buffer,
-            },
-            name: {
-                type: String,
-                required: true
-            },
-            mimetype: {
-                type: String,
-                required: true
-            },
-            featured: {
-                type: Boolean,
-                default: false
-            }
+    photos: [{
+        photo: {
+            type: Buffer,
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        mimetype: {
+            type: String,
+            required: true
+        },
+        featured: {
+            type: Boolean,
+            default: false
         }
-    ],
-    variations: [
-        {
-            priceOptions: [
-                {
-                    options: [
-                        {
-                            option: {
-                                type: String,
-                                required: true
-                            },
-                            price: {
-                                type: Number,
-                                required: true
-                            },
-                            old_price: {
-                                type: Number,
-                                required: true
-                            }
+    }],
+    variations: [{
+            priceOptions: [{
+                options: [{
+                        option: {
+                            type: String,
+                            required: true
+                        },
+                        price: {
+                            type: Number,
+                            required: true
+                        },
+                        old_price: {
+                            type: Number,
+                            required: true
                         }
+                    }
 
-                    ]
+                ]
 
-                }
-            ]
+            }]
 
         }
 
@@ -103,29 +97,38 @@ const productSchema = new mongoose.Schema({
     timestamps: true //set Schema Model options
 })
 
-productSchema.methods.toJSON = function () {
+productSchema.methods.toJSON = function() {
     const product = this
 
-    productObject = product.toObject()
+    try {
+        productObject = product.toObject()
 
-    // delete productObject.photos.photo
-    if (productObject.photos) {
-        productObject.photos.forEach(photo => {
-            delete photo.photo
-        })
+        // delete productObject.photos.photo
+        if (productObject.photos) {
+            productObject.photos.forEach(photo => {
+                delete photo.photo
+            })
+        }
+
+        return productObject
+
+
+    } catch (e) {
+
+        return e
+
     }
 
 
     // console.log(productObject.photos)
 
-    return productObject
 
 }
 
 productSchema.index({ product_name: 'text' })
 
 //Validate ObjectId
-productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""
+productSchema.statics.isValidID = async(_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""
 
 
 const Product = mongoose.model('Product', productSchema)
