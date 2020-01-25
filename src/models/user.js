@@ -35,7 +35,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    shipping_address: {
+    delivery_address: {
+        type: String,
+        trim: true
+    },
+    delivery_name: {
         type: String,
         trim: true
     },
