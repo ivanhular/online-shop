@@ -15,8 +15,7 @@ Products
 - Dynamic content-type for image rendering(DONE)
 - allow updates of photos(DONE)
 
-Transaction
--Payment methods
+
 
 
 Segments / Category
@@ -33,10 +32,16 @@ Segments / Category
 //Update endpoint for saving foreign key of segmentID
 -POST /products
 
-
 Search 
 - Create a flexible search endpoint https://code.tutsplus.com/tutorials/full-text-search-in-mongodb--cms-24835
+- add filters for (Newly added , lowest price , highest price )
+
+Logs
+-create activity logs collection (monitor search and user activities)
+-
 
 
 
+Transaction
+-Payment methods
 

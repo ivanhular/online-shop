@@ -2,7 +2,10 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 
-const auth = async (req, res, next) => {
+
+const auth = async(req, res, next) => {
+
+    console.log(req.session)
 
     try {
 
@@ -25,17 +28,17 @@ const auth = async (req, res, next) => {
     }
 }
 
-const isAdmin = async (req, res, next) => {
+const isAdmin = async(req, res, next) => {
     try {
 
-        if(!req.user.role){
+        if (!req.user.role) {
             throw new Error()
         }
-        
-        if (req.user.role !== 'admin' || req.user.role !== 'owner'){
+
+        if (req.user.role !== 'admin' || req.user.role !== 'owner') {
             throw new Error()
         }
-        
+
         next()
 
     } catch (e) {
