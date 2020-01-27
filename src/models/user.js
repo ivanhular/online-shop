@@ -61,42 +61,57 @@ const userSchema = new mongoose.Schema({
 // role
 
 //Login by credentials
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async(email, password) => {
 
-    const user = await User.findOne({ email })
+    try {
+        const user = await User.findOne({ email })
 
-    console.log(user)
+        // console.log(user)
 
-    if (!user) {
-        throw new Error('Invalid Login!')
+        if (!user) {
+            throw new Error('Invalid Login!')
+        }
+
+        const isMatch = bcrpyt.compare(password, user.password)
+
+        if (!isMatch) {
+            throw new Error('Invalid Login!')
+        }
+
+        return user
+
+    } catch (e) {
+
+        return e
     }
 
-    const isMatch = bcrpyt.compare(password, user.password)
-
-    if (!isMatch) {
-        throw new Error('Invalid Login!')
-    }
-
-    return user
 
 }
 
 //Generate Auth Token 
-userSchema.methods.generateAuthToken = async function () {
+userSchema.methods.generateAuthToken = async function() {
+
     const user = this
 
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET_KEY)
+    try {
 
-    user.tokens = user.tokens.concat({ token })
+        const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET_KEY)
 
-    user.save()
+        user.tokens = user.tokens.concat({ token })
 
-    return token
+        user.save()
+
+        return token
+
+    } catch (e) {
+
+        return e
+    }
 
 }
 
 //Hash password before saving
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
     const user = this
 
     if (user.isModified('password')) {
@@ -106,7 +121,7 @@ userSchema.pre('save', async function (next) {
 })
 
 //Validate ObjectId
-userSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) || false
+userSchema.statics.isValidID = async(_id) => mongoose.Types.ObjectId.isValid(_id) || false
 
 
 const User = mongoose.model('user', userSchema)
