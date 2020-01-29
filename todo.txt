@@ -17,8 +17,6 @@ Products
 - allow updates of photos(DONE)
 
 
-
-
 Segments / Category
 //retun categories base on segment ID relationed to categories
 //create virtual for categoriesBysegment 
@@ -36,8 +34,8 @@ Segments / Category
 Search 
 - Create a flexible search endpoint https://code.tutsplus.com/tutorials/full-text-search-in-mongodb--cms-24835
 - add filters for (Newly added , lowest price , highest price )
-- update search using fulltextsearch
-- make /search endpoint as /hint
+- update search using fulltextsearch (DONE)
+- make /search endpoint as /hint (DONE)
 
 Logs
 -create activity logs collection (monitor search and user activities)

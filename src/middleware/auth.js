@@ -3,9 +3,9 @@ const User = require('../models/user')
 
 
 
-const auth = async(req, res, next) => {
+const auth = async (req, res, next) => {
 
-    console.log(req.session)
+    // console.log(req.session)
 
     try {
 
@@ -28,15 +28,18 @@ const auth = async(req, res, next) => {
     }
 }
 
-const isAdmin = async(req, res, next) => {
+const isAdmin = async (req, res, next) => {
+
+    const authrizedRole = ['owner', 'admin']
+
     try {
 
         if (!req.user.role) {
             throw new Error()
         }
 
-        if (req.user.role !== 'admin' || req.user.role !== 'owner') {
-            throw new Error()
+        if (!authrizedRole.includes(req.user.role)) {
+            return res.status(403).send()
         }
 
         next()

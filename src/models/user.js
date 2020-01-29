@@ -53,15 +53,26 @@ const userSchema = new mongoose.Schema({
     timestamps: true //set Schema Model options
 });
 
-// email
-// phone
-// shipping_address
-// password
-// user_id
-// role
+//Returned Response
+userSchema.methods.toJSON = function () {
+    const user = this
+
+    try {
+        const userObject = user.toObject()
+
+        delete userObject.tokens
+
+        return userObject
+
+    } catch (e) {
+
+        return e
+    }
+
+}
 
 //Login by credentials
-userSchema.statics.findByCredentials = async(email, password) => {
+userSchema.statics.findByCredentials = async (email, password) => {
 
     try {
         const user = await User.findOne({ email })
@@ -89,7 +100,7 @@ userSchema.statics.findByCredentials = async(email, password) => {
 }
 
 //Generate Auth Token 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
 
     const user = this
 
@@ -111,7 +122,7 @@ userSchema.methods.generateAuthToken = async function() {
 }
 
 //Hash password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     const user = this
 
     if (user.isModified('password')) {
@@ -121,7 +132,7 @@ userSchema.pre('save', async function(next) {
 })
 
 //Validate ObjectId
-userSchema.statics.isValidID = async(_id) => mongoose.Types.ObjectId.isValid(_id) || false
+userSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) || false
 
 
 const User = mongoose.model('user', userSchema)

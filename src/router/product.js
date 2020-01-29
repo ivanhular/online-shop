@@ -144,7 +144,37 @@ router.get('/products/:id', async (req, res) => {
 
 })
 
+//Product Search
 router.post('/products/search', async (req, res) => {
+    try {
+
+        if (!req.body.search) {
+            return res.status(404).send({ message: 'Enter Search Keyword' })
+        }
+
+        const searchResult = await Product.find({
+            $text: {
+                $search: `"${req.body.search}"`
+            }
+        }, 'product_name', {
+            limit: 20
+        })
+        // // .explain('executionStats')
+        // console.log(searchResult)
+
+        if (searchResult.length === 0) {
+            return res.send({ message: 'No result Found' })
+        }
+
+        res.send(searchResult)
+
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+//Hint
+router.post('/products/search/hint', async (req, res) => {
     try {
 
         if (!req.body.search) {
@@ -161,7 +191,6 @@ router.post('/products/search', async (req, res) => {
             limit: 20
         })
 
-        // .explain()
 
         if (searchResult.length === 0) {
             return res.send({ message: 'No result Found' })
