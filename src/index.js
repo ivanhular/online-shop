@@ -8,11 +8,13 @@ const segmentRouter = require('./router/segment')
 const categoryRouter = require('./router/category')
 
 
-const port = process.env.PORT || 5000
+const {
+    PORT = 3000
+} = process.env 
 
 const app = express()
 
-let sess;
+// let sess;
 
 // app.use(session({
 //     secret: process.env.SESSION_KEY,
@@ -46,6 +48,6 @@ app.use(productRouter)
 
 
 
-app.listen(port, () => {
-    console.log(`App running on Port ${port}`)
+app.listen(PORT, () => {
+    console.log(`App running on Port ${PORT}`)
 })
