@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-//mongodb://localhost:27017/online-shop
 
 const dbConnectionStr = process.env.ENVIRONMENT === 'production' ? process.env.MONGODB_CONNECTION_URL : 'mongodb://localhost:27017/owkii-db'
 
