@@ -12,7 +12,7 @@ const wishSchema = new mongoose.Schema({
             product_id: {
                 type: mongoose.Types.ObjectId,
                 required: true,
-                ref: Product
+                ref: 'Product'
             },
             price: {
                 type: Number

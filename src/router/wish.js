@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Wish = require('../models/order')
+const Wish = require('../models/wish')
 const { auth } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
