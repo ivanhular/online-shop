@@ -135,7 +135,7 @@ userSchema.pre('save', async function (next) {
 userSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) || false
 
 
-const User = mongoose.model('user', userSchema)
+const User = mongoose.model('User', userSchema)
 
 
 module.exports = User

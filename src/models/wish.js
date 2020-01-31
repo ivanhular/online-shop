@@ -1,36 +1,18 @@
 const mongoose = require('mongoose')
 
-const orderSchema = new mongoose.Schema({
+
+const wishSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: 'User'
-    },
-    chat_id: {
-        type: mongoose.Types.ObjectId,
-    },
-    status: {
-        type: String,
-        required: true,
-        default: ''
-    },
-    subtotal: {
-        type: Number,
-        required: true
-    },
-    shipping_fee: {
-        type: Number,
-    },
-    shipping_address: {
-        type: String,
-        trim: true
     },
     products: [
         {
             product_id: {
                 type: mongoose.Types.ObjectId,
                 required: true,
-                ref: 'Product'
+                ref: Product
             },
             price: {
                 type: Number
@@ -45,9 +27,9 @@ const orderSchema = new mongoose.Schema({
     ]
 })
 
-const Order = mongoose.model('Order', orderSchema)
+const Wish = mongoose.model('Wish', wishSchema)
 
-module.exports = Order
+module.exports = Wish
 
 // user_id
 // chat_id

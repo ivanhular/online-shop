@@ -5,7 +5,8 @@ require('./db/mongoose')
 const userRouter = require('./router/user')
 const productRouter = require('./router/product')
 const segmentRouter = require('./router/segment')
-const categoryRouter = require('./router/category')
+const categoryRouter = require('./router/category') 
+const wishRouter = require('./router/wish') 
 
 
 const {
@@ -31,6 +32,7 @@ app.use(userRouter)
 app.use(categoryRouter)
 app.use(segmentRouter)
 app.use(productRouter)
+app.use(wishRouter)
 
 // app.get('/', (req, res) => {
 //     sess = req.session
