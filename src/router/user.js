@@ -52,14 +52,14 @@ router.get('/users/:id', [auth, isAdmin], async (req, res) => {
 
 
 //UPDATE user by ID
-router.patch('/users/:id', [auth, isAdmin], async (req, res) => {
+router.patch('/users/:id', [auth], async (req, res) => {
 
     const user = await User.isValidID(req.params.id) ? await User.findById(req.params.id) : ""
     const allowedUpdates = getObjectProps(User.schema.paths)
     const updates = getObjectProps(req.body)
     const isValidUpdate = updates.every((key) => allowedUpdates.includes(key))
 
-    console.log(isValidUpdate)
+    // console.log(isValidUpdate)
 
     try {
         if (!user) {
@@ -106,8 +106,7 @@ router.post('/users/login', async (req, res) => {
         res.send({ user, token })
 
     } catch (e) {
-
-        res.status(404).send(e)
+        res.status(404).send({ message: e.message })
 
     }
 })

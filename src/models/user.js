@@ -77,23 +77,21 @@ userSchema.statics.findByCredentials = async (email, password) => {
     try {
         const user = await User.findOne({ email })
 
-        // console.log(user)
-
         if (!user) {
-            throw new Error('Invalid Login!')
+            throw Error()
         }
 
-        const isMatch = bcrpyt.compare(password, user.password)
+        const isMatch = await bcrpyt.compare(password, user.password)
 
         if (!isMatch) {
-            throw new Error('Invalid Login!')
+            throw Error()
         }
 
         return user
 
     } catch (e) {
 
-        return e
+        throw new Error('Invalid Login!')
     }
 
 

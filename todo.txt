@@ -5,7 +5,7 @@ users
 - Token Expiration
 - Sessions
 - Avatar for user
-
+- seperate change password to patch
 
 Products
 - Complete products CRUD (DONE)

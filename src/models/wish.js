@@ -27,7 +27,32 @@ const wishSchema = new mongoose.Schema({
     ]
 })
 
+// wishSchema.methods = function () {
+//     const wish = this
+
+//     try {
+
+//         const wishObject = wish.toObject()
+
+//         return wishObject
+
+//     } catch (e) {
+
+//         return e
+//     }
+// }
+// wishSchema.pre('save', async function (next) {
+
+//     const wishlist = this 
+
+
+
+//     next()
+// })
+
 const Wish = mongoose.model('Wish', wishSchema)
+
+
 
 module.exports = Wish
 
