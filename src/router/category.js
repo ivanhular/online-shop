@@ -1,10 +1,11 @@
 const router = require('express').Router()
 const Category = require('../models/category')
+const { auth, isAdmin } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
 //Create Category
-router.post('/categories', upload.array('photos', 12), async (req, res) => {
+router.post('/categories', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
 
     const category = new Category(req.body)
 
@@ -20,7 +21,7 @@ router.post('/categories', upload.array('photos', 12), async (req, res) => {
 
     } catch (e) {
 
-        res.send(e)
+        res.status(500).send({ message: e.message })
 
     }
 
@@ -28,7 +29,7 @@ router.post('/categories', upload.array('photos', 12), async (req, res) => {
 })
 
 //GET
-router.get('/categories', async (req, res) => {
+router.get('/categories', [auth], async (req, res) => {
     try {
 
         const category = await Category.find()
@@ -37,13 +38,13 @@ router.get('/categories', async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
 
 //Serve category Image/s
-router.get('/categories/:id/:photo', async (req, res) => {
+router.get('/categories/:id/:photo', [auth], async (req, res) => {
     try {
         const category = await Category.findById(req.params.id)
 
@@ -59,12 +60,12 @@ router.get('/categories/:id/:photo', async (req, res) => {
 
 
     } catch (e) {
-        res.status(404).send(e)
+        res.status(404).send({ message: e.message })
     }
 })
 
 //PATCH
-router.patch('/categories/:id', upload.array('photos', 12), async (req, res) => {
+router.patch('/categories/:id', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
     try {
 
         const category = await Category.isValidID(req.params.id)
@@ -92,19 +93,19 @@ router.patch('/categories/:id', upload.array('photos', 12), async (req, res) => 
         res.send(category)
 
     } catch (e) {
-        res.send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
 //DELETE
-router.delete('/categories/:id', async (req, res) => {
+router.delete('/categories/:id', [auth, isAdmin], async (req, res) => {
     try {
         const category = await Category.findByIdAndDelete(req.params.id)
 
         res.send(category)
 
     } catch (e) {
-        res.send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 

@@ -64,29 +64,22 @@ const productSchema = new mongoose.Schema({
             default: false
         }
     }],
-    variations: [{
-            priceOptions: [{
-                options: [{
-                        option: {
-                            type: String,
-                            required: true
-                        },
-                        price: {
-                            type: Number,
-                            required: true
-                        },
-                        old_price: {
-                            type: Number,
-                            required: true
-                        }
+    price_options: [
+        {
+            options: [
+                {
+                    option_name: {
+                        type: String,
+                        required: true
+                    },
+                    price: {
+                        type: Number,
+                        required: true
                     }
-
-                ]
-
-            }]
+                }
+            ]
 
         }
-
     ],
     status: {
         type: Boolean,
@@ -97,7 +90,7 @@ const productSchema = new mongoose.Schema({
     timestamps: true //set Schema Model options
 })
 
-productSchema.methods.toJSON = function() {
+productSchema.methods.toJSON = function () {
     const product = this
 
     try {
@@ -128,7 +121,7 @@ productSchema.methods.toJSON = function() {
 productSchema.index({ product_name: 'text' })
 
 //Validate ObjectId
-productSchema.statics.isValidID = async(_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""
+productSchema.statics.isValidID = async (_id) => mongoose.Types.ObjectId.isValid(_id) ? await Product.findById(_id) : ""
 
 
 const Product = mongoose.model('Product', productSchema)

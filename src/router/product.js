@@ -3,11 +3,12 @@ const mongoose = require('mongoose')
 const Product = require('../models/product')
 const Category = require('../models/category')
 const Segment = require('../models/segment')
+const { auth, isAdmin } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
 //CREATE product
-router.post('/products', upload.array('photos', 12), async (req, res) => {
+router.post('/products', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
 
     const product = new Product(req.body)
 
@@ -16,9 +17,9 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
         await saveOptimizedImage(product, req.files)
         // console.log(req.body.variations)
 
-        if (req.body.variations) {
+        if (req.body.price_options) {
 
-            product.variations = JSON.parse(req.body.variations)
+            product.price_options = JSON.parse(req.body.price_options)
 
         }
 
@@ -28,7 +29,7 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
 
     } catch (e) {
 
-        res.status(400).send(e)
+        res.status(400).send(e.message)
 
     }
 }, (error, req, res, next) => {
@@ -37,7 +38,7 @@ router.post('/products', upload.array('photos', 12), async (req, res) => {
 
 
 //Serve  image
-router.get('/products/:id/:photo', async (req, res) => {
+router.get('/products/:id/:photo', auth, async (req, res) => {
 
     try {
 
@@ -65,7 +66,7 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?segmentid=id&categoryid=id
 // GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortBy=createdAt:desc&limit=0&skip=1&featured=true
 // GET products 
-router.get('/products', async (req, res) => {
+router.get('/products', auth, async (req, res) => {
 
     const match = {}
     const limit = {
@@ -121,12 +122,12 @@ router.get('/products', async (req, res) => {
         res.send(products)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
 //GET product by ID
-router.get('/products/:id', async (req, res) => {
+router.get('/products/:id', auth, async (req, res) => {
 
     const product = await Product.isValidID(req.params.id)
 
@@ -139,13 +140,13 @@ router.get('/products/:id', async (req, res) => {
         res.send(product)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
 
 //Product Search
-router.post('/products/search', async (req, res) => {
+router.post('/products/search', auth, async (req, res) => {
     try {
 
         if (!req.body.search) {
@@ -169,12 +170,12 @@ router.post('/products/search', async (req, res) => {
         res.send(searchResult)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
 //Hint
-router.post('/products/search/hint', async (req, res) => {
+router.post('/products/search/hint', auth, async (req, res) => {
     try {
 
         if (!req.body.search) {
@@ -200,12 +201,12 @@ router.post('/products/search/hint', async (req, res) => {
         res.send(searchResult)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
 //PATCH product by ID
-router.patch('/products/:id', upload.array('photos', 12), async (req, res) => {
+router.patch('/products/:id', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
 
     const product = await Product.isValidID(req.params.id)
 
@@ -224,25 +225,37 @@ router.patch('/products/:id', upload.array('photos', 12), async (req, res) => {
             return res.status(400).send()
         }
 
+
         await saveOptimizedImage(product, req.files)
 
         getObjectProps(req.body).forEach(update => {
+
+            if (update == "price_options") {
+                product[update] = JSON.parse(req.body.price_options)
+            }
+
             product[update] = req.body[update]
         })
+
+        if (req.body.price_options) {
+
+            product.price_options = JSON.parse(req.body.price_options)
+
+        }
 
         await product.save()
 
         res.send(product)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
 
 
 //DELETE product by ID 
-router.delete('/products/:id', async (req, res) => {
+router.delete('/products/:id', [auth, isAdmin], async (req, res) => {
 
     const product = await Product.isValidID(req.params.id)
 
@@ -257,14 +270,10 @@ router.delete('/products/:id', async (req, res) => {
         res.send(product)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({message:e.message})
     }
 })
 
 
-//POST Segment
-// router.post('/products/segments', async (req, res) => {
-
-// })
 
 module.exports = router

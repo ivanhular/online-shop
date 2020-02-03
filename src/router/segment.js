@@ -1,12 +1,13 @@
 const router = require('express').Router()
 const Segment = require('../models/segment')
 const Category = require('../models/category')
+const { auth, isAdmin } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
 
 //Create Segment
-router.post('/segments', upload.array('photos', 12), async (req, res) => {
+router.post('/segments', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
 
     const segment = new Segment(req.body)
 
@@ -20,7 +21,7 @@ router.post('/segments', upload.array('photos', 12), async (req, res) => {
 
     } catch (e) {
 
-        res.send(e)
+        res.status(500).send({ message: e.message })
 
     }
 
@@ -28,7 +29,7 @@ router.post('/segments', upload.array('photos', 12), async (req, res) => {
 })
 
 //GET
-router.get('/segments', async (req, res) => {
+router.get('/segments', auth, async (req, res) => {
     try {
 
         const segment = await Segment.find()
@@ -37,13 +38,13 @@ router.get('/segments', async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
 
 //Serve segment Image/s
-router.get('/segments/:id/:photo', async (req, res) => {
+router.get('/segments/:id/:photo', auth, async (req, res) => {
     try {
         const segment = await Segment.findById(req.params.id)
 
@@ -59,12 +60,12 @@ router.get('/segments/:id/:photo', async (req, res) => {
 
 
     } catch (e) {
-        res.status(404).send(e)
+        res.status(404).send({ message: e.message })
     }
 })
 
 //GET /segments/:id
-router.get('/segments/:id', async (req, res) => {
+router.get('/segments/:id', auth, async (req, res) => {
     try {
 
         const segment = await Segment.isValidID(req.params.id)
@@ -92,13 +93,13 @@ router.get('/segments/:id', async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
 
 //PATCH
-router.patch('/segments/:id', upload.array('photos', 12), async (req, res) => {
+router.patch('/segments/:id', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
     try {
 
         const segment = await Segment.isValidID(req.params.id)
@@ -124,19 +125,19 @@ router.patch('/segments/:id', upload.array('photos', 12), async (req, res) => {
         res.send(segment)
 
     } catch (e) {
-        res.send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
 //DELETE
-router.delete('/segments/:id', async (req, res) => {
+router.delete('/segments/:id', [auth, isAdmin], async (req, res) => {
     try {
         const segment = await Segment.findByIdAndDelete(req.params.id)
 
         res.send(segment)
 
     } catch (e) {
-        res.send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
