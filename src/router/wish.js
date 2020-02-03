@@ -65,7 +65,7 @@ router.delete('/wishlist', auth, async (req, res) => {
         }
 
         if (!req.body.product_id) {
-            return res.status(400).send({ message: 'product_id params required!' })
+            return res.status(400).send({ message: 'product_id key required!' })
         }
 
         wishlist.products = wishlist.products.filter(product => product._id != req.body.product_id)
@@ -80,6 +80,22 @@ router.delete('/wishlist', auth, async (req, res) => {
 
 })
 
+router.delete('/wishlist/all', auth, async (req, res) => {
+
+    try {
+
+        const wishlist = await Wish.findOneAndDelete({ user_id: req.user._id })
+
+        if (!wishlist) {
+            return res.status(404).send({ message: 'No Wishlist found' })
+        }
+
+        res.send({ message: 'Successfully deleted', data: wishlist })
+
+    } catch (e) {
+        res.status(500).send({ message: e.message })
+    }
+})
 
 
 module.exports = router

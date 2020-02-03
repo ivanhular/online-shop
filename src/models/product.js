@@ -129,23 +129,3 @@ const Product = mongoose.model('Product', productSchema)
 
 module.exports = Product
 
-
-
-// [
-//     {
-//         "priceOptions": [
-//             {
-//                 "variation": "Red",
-//                 "options": [
-//                     {
-//                         "option": "sm",
-//                         "price": 200,
-//                         "old_price": 100
-//                     }
-
-//                 ]
-//             }
-//         ]
-//     }
-
-// ]
