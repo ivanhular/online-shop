@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Product = require('../models/product')
 
 
 const wishSchema = new mongoose.Schema({
@@ -22,14 +23,39 @@ const wishSchema = new mongoose.Schema({
             },
             quantity: {
                 type: Number
+            },
+            thumbnail: {
+                type: String,
+                required: true
             }
         }
     ]
 })
 
+wishSchema.pre('save', async function (next) {
+
+    const wishlist = this
+
+    try {
+
+        const thumbnail = await Product.findById(this)
+
+        // wishlist.thumbnail = wi
+
+        next()
+
+    } catch (e) {
+
+        return e.message
+
+    }
+
+
+
+
+})
 
 const Wish = mongoose.model('Wish', wishSchema)
-
 
 
 module.exports = Wish

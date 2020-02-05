@@ -18,10 +18,14 @@ router.post('/users', async (req, res) => {
 
         const token = await user.generateAuthToken()
 
-        return res.status(201).send({ user, token })
+        return res.status(201).send({ message: 'Account successfully created.', user, token })
 
     } catch (e) {
+<<<<<<< HEAD
         res.status(400).send({ error: e.message })
+=======
+        res.status(400).send({ message: e.message })
+>>>>>>> 9f0f118d6955e510721e241c39a010cc5418f35f
     }
 
 })
@@ -41,11 +45,11 @@ router.get('/users/:id', [auth, isAdmin], async (req, res) => {
 
     try {
         if (!user) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No account found.' })
         }
         res.send(user)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
@@ -58,16 +62,17 @@ router.patch('/users/:id', [auth], async (req, res) => {
     const allowedUpdates = getObjectProps(User.schema.paths)
     const updates = getObjectProps(req.body)
     const isValidUpdate = updates.every((key) => allowedUpdates.includes(key))
+    const filterInvalidUpdate = updates.filter((key) => !allowedUpdates.includes(key))
 
     // console.log(isValidUpdate)
 
     try {
         if (!user) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No account found.' })
         }
 
         if (!isValidUpdate) {
-            return res.status(400).send()
+            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
         updates.forEach((key) => {
@@ -76,10 +81,10 @@ router.patch('/users/:id', [auth], async (req, res) => {
 
         await user.save()
 
-        res.send(user)
+        res.send({ message: 'Account Updated!', user })
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
@@ -89,10 +94,10 @@ router.delete('/users/:id', [auth, isAdmin], async (req, res) => {
     try {
         const user = await User.isValidID(req.params.id) ? await User.findByIdAndDelete(req.params.id) : ""
 
-        res.send(user)
+        res.send({ message: 'Account Deleted!', user })
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
@@ -126,7 +131,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
 
     }
 })
