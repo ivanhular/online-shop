@@ -25,27 +25,27 @@ router.post('/products', [auth, isAdmin], upload.array('photos', 12), async (req
 
         await product.save()
 
-        res.status(201).send(product)
+        res.status(201).send({ message: 'Product Successfully created', product })
 
     } catch (e) {
 
-        res.status(400).send(e.message)
+        res.status(400).send({ message: e.message })
 
     }
 }, (error, req, res, next) => {
-    res.status(400).send({ error: error.message }) // handle the error of multer
+    res.status(400).send({ message: error.message }) // handle the error of multer
 })
 
 
 //Serve  image
-router.get('/products/:id/:photo', auth, async (req, res) => {
+router.get('/products/:id/:photo', async (req, res) => {
 
     try {
 
         const product = await Product.findById(req.params.id)
 
         if (!product) {
-            throw new Error()
+            throw new Error('No photo found')
         }
 
         const photo = product.photos.find((photo) => photo.name === req.params.photo)
@@ -56,7 +56,7 @@ router.get('/products/:id/:photo', auth, async (req, res) => {
         // console.log()
 
     } catch (e) {
-        res.status(404).send()
+        res.status(404).send({ message: e.message })
     }
 
 })
@@ -134,7 +134,7 @@ router.get('/products/:id', auth, async (req, res) => {
     try {
 
         if (!product) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No product found' })
         }
 
         res.send(product)
@@ -209,24 +209,27 @@ router.post('/products/search/hint', auth, async (req, res) => {
 router.patch('/products/:id', [auth, isAdmin], upload.array('photos', 12), async (req, res) => {
 
     const product = await Product.isValidID(req.params.id)
-
     const allowedUpdates = getObjectProps(Product.schema.paths)
-    const isAllowedUpdate = getObjectProps(req.body).every(update => allowedUpdates.includes(update))
+    const updates = getObjectProps(req.body)
+    const isAllowedUpdate = updates.every(update => allowedUpdates.includes(update))
+    const filterInvalidUpdate = updates.filter((key) => !allowedUpdates.includes(key))
 
     // console.log(Object.keys(req.body))
 
-    try {
 
+    // console.log(req.headers)
+
+    try {
         if (!product) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No product found' })
         }
 
         if (!isAllowedUpdate) {
-            return res.status(400).send()
+            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
 
-        await saveOptimizedImage(product, req.files)
+        await saveOptimizedImage(product, req)
 
         getObjectProps(req.body).forEach(update => {
 
@@ -270,7 +273,7 @@ router.delete('/products/:id', [auth, isAdmin], async (req, res) => {
         res.send(product)
 
     } catch (e) {
-        res.status(500).send({message:e.message})
+        res.status(500).send({ message: e.message })
     }
 })
 

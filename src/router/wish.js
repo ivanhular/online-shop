@@ -32,7 +32,7 @@ router.post('/wishlist', auth, async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
@@ -49,7 +49,7 @@ router.get('/wishlist', auth, async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
 
     }
 })
@@ -65,7 +65,7 @@ router.delete('/wishlist', auth, async (req, res) => {
         }
 
         if (!req.body.product_id) {
-            return res.status(400).send({ message: 'product_id key required!' })
+            return res.status(400).send({ message: 'Key product_id required!' })
         }
 
         wishlist.products = wishlist.products.filter(product => product._id != req.body.product_id)
@@ -75,7 +75,7 @@ router.delete('/wishlist', auth, async (req, res) => {
         res.send(wishlist)
 
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send({ message: e.message })
     }
 
 })
@@ -90,7 +90,7 @@ router.delete('/wishlist/all', auth, async (req, res) => {
             return res.status(404).send({ message: 'No Wishlist found' })
         }
 
-        res.send({ message: 'Successfully deleted', data: wishlist })
+        res.send({ message: 'Successfully deleted', wishlist })
 
     } catch (e) {
         res.status(500).send({ message: e.message })

@@ -68,7 +68,7 @@ router.patch('/users/:id', [auth], async (req, res) => {
         }
 
         if (!isValidUpdate) {
-            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(',')}` })
+            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
         updates.forEach((key) => {

@@ -17,7 +17,7 @@ router.post('/segments', [auth, isAdmin], upload.array('photos', 12), async (req
 
         await segment.save()
 
-        res.send(segment)
+        res.send({ message: 'Segment Successfully created.', segment })
 
     } catch (e) {
 
@@ -49,7 +49,7 @@ router.get('/segments/:id/:photo', auth, async (req, res) => {
         const segment = await Segment.findById(req.params.id)
 
         if (!segment) {
-            throw new Error()
+            throw new Error('No photo found')
         }
 
         const photo = segment.photos.find(photo => photo.name === req.params.photo)
@@ -71,7 +71,7 @@ router.get('/segments/:id', auth, async (req, res) => {
         const segment = await Segment.isValidID(req.params.id)
 
         if (!segment) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No segment found' })
         }
 
         await segment.populate({
@@ -104,16 +104,17 @@ router.patch('/segments/:id', [auth, isAdmin], upload.array('photos', 12), async
 
         const segment = await Segment.isValidID(req.params.id)
         const allowedUpdates = getObjectProps(Segment.schema.paths)
-        const isValidUpdate = getObjectProps(req.body).every(update => allowedUpdates.includes(update))
+        const updates = getObjectProps(req.body)
+        const isValidUpdate = updates.every(update => allowedUpdates.includes(update))
+        const filterInvalidUpdate = updates.filter((key) => !allowedUpdates.includes(key))
 
         if (!segment) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No segment found' })
         }
         if (!isValidUpdate) {
-            return res.status(400).send()
+            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
-        console.log(req.body)
         await saveOptimizedImage(segment, req.files)
 
         getObjectProps(req.body).forEach(update => {
@@ -122,7 +123,7 @@ router.patch('/segments/:id', [auth, isAdmin], upload.array('photos', 12), async
 
         await segment.save()
         // console.log(req.params.id)
-        res.send(segment)
+        res.send({ message: 'Segment Updated', segment })
 
     } catch (e) {
         res.status(500).send({ message: e.message })
@@ -134,7 +135,7 @@ router.delete('/segments/:id', [auth, isAdmin], async (req, res) => {
     try {
         const segment = await Segment.findByIdAndDelete(req.params.id)
 
-        res.send(segment)
+        res.send({ message: 'Segment deleted!', segment })
 
     } catch (e) {
         res.status(500).send({ message: e.message })

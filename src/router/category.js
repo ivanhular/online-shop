@@ -17,7 +17,7 @@ router.post('/categories', [auth, isAdmin], upload.array('photos', 12), async (r
 
         await category.save()
 
-        res.send(sendNotif('Category created', category))
+        res.send({ message: 'Category created.', category })
 
     } catch (e) {
 
@@ -49,7 +49,7 @@ router.get('/categories/:id/:photo', [auth], async (req, res) => {
         const category = await Category.findById(req.params.id)
 
         if (!category) {
-            throw new Error()
+            throw new Error('No photo found')
         }
 
         const photo = category.photos.find(photo => photo.name === req.params.photo)
@@ -70,14 +70,16 @@ router.patch('/categories/:id', [auth, isAdmin], upload.array('photos', 12), asy
 
         const category = await Category.isValidID(req.params.id)
         const allowedUpdates = getObjectProps(Category.schema.paths)
-        const isValidUpdate = getObjectProps(req.body).every(update => allowedUpdates.includes(update))
+        const updates = getObjectProps(req.body)
+        const isValidUpdate = updates.every(update => allowedUpdates.includes(update))
+        const filterInvalidUpdate = updates.filter((key) => !allowedUpdates.includes(key))
 
         if (!category) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No category found' })
         }
 
         if (!isValidUpdate) {
-            return res.status(400).send()
+            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
         await saveOptimizedImage(category, req.files)
@@ -90,7 +92,7 @@ router.patch('/categories/:id', [auth, isAdmin], upload.array('photos', 12), asy
 
         await category.save()
 
-        res.send(category)
+        res.send({ message: 'Category Updated.', category })
 
     } catch (e) {
         res.status(500).send({ message: e.message })
@@ -102,7 +104,7 @@ router.delete('/categories/:id', [auth, isAdmin], async (req, res) => {
     try {
         const category = await Category.findByIdAndDelete(req.params.id)
 
-        res.send(category)
+        res.send({ message: 'Category Deleted!', category })
 
     } catch (e) {
         res.status(500).send({ message: e.message })
