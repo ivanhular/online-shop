@@ -21,7 +21,7 @@ router.post('/users', async (req, res) => {
         return res.status(201).send({ message: 'Account successfully created.', user, token })
 
     } catch (e) {
-        res.status(400).send({ message: e.message })
+        res.status(400).send({ error: e.message })
     }
 
 })

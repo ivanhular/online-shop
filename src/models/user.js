@@ -15,15 +15,21 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         required: true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error('Invalid Email')
-            }
+        validate:{
+            validator:function(v){
+                return validator.isEmail(v)
+            },
+            message: props => `Invalid Email`
         }
+        // validate(value) {
+        //     if (!validator.isEmail(value)) {
+        //         throw new Error('Invalid Email')
+        //     }
+        // }
     },
     password: {
         type: String,
-        minlength: 6,
+        minlength: [6,'Password minimun of 6 characters'],
         trim: true,
         validate(value) {
             if (value.includes('password')) {
@@ -66,7 +72,7 @@ userSchema.methods.toJSON = function () {
 
     } catch (e) {
 
-        return e
+        return e.message
     }
 
 }
@@ -114,7 +120,7 @@ userSchema.methods.generateAuthToken = async function () {
 
     } catch (e) {
 
-        return e
+        return e.message
     }
 
 }
