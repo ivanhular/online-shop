@@ -56,7 +56,7 @@ router.get('/products/:id/:photo', auth, async (req, res) => {
         // console.log()
 
     } catch (e) {
-        res.status(404).send()
+        res.status(404).send({ error: error.message })
     }
 
 })
