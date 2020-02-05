@@ -21,7 +21,7 @@ router.post('/users', async (req, res) => {
         return res.status(201).send({ message: 'Account successfully created.', user, token })
 
     } catch (e) {
-        res.status(400).send({ error: e })
+        res.status(400).send({ message: e.message })
     }
 
 })
@@ -41,7 +41,7 @@ router.get('/users/:id', [auth, isAdmin], async (req, res) => {
 
     try {
         if (!user) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No account found.' })
         }
         res.send(user)
     } catch (e) {
@@ -58,16 +58,17 @@ router.patch('/users/:id', [auth], async (req, res) => {
     const allowedUpdates = getObjectProps(User.schema.paths)
     const updates = getObjectProps(req.body)
     const isValidUpdate = updates.every((key) => allowedUpdates.includes(key))
+    const filterInvalidUpdate = updates.filter((key) => !allowedUpdates.includes(key))
 
     // console.log(isValidUpdate)
 
     try {
         if (!user) {
-            return res.status(404).send()
+            return res.status(404).send({ message: 'No account found.' })
         }
 
         if (!isValidUpdate) {
-            return res.status(400).send()
+            return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(',')}` })
         }
 
         updates.forEach((key) => {
