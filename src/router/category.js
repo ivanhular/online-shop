@@ -17,7 +17,7 @@ router.post('/categories', [auth, isAdmin], upload.array('photos', 12), async (r
 
         await category.save()
 
-        res.send(category)
+        res.send(sendNotif('Category created', category))
 
     } catch (e) {
 

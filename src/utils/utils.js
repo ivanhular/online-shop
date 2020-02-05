@@ -14,7 +14,7 @@ const upload = multer({
 }) //initialize multer for image upload
 
 
-const saveOptimizedImage = async function (modelObj,files) { //params Model and photo files
+const saveOptimizedImage = async function (modelObj, files) { //params Model and photo files
 
     try {
         const photos = files.map(async (photo) => {
@@ -26,7 +26,7 @@ const saveOptimizedImage = async function (modelObj,files) { //params Model and 
                 .jpeg()
                 .toBuffer()
 
-                // console.log(photo)
+            // console.log(photo)
 
             return {
                 // photo: photo.buffer,
@@ -44,7 +44,7 @@ const saveOptimizedImage = async function (modelObj,files) { //params Model and 
         modelObj.photos = dataImage
 
     } catch (e) {
-        
+
         throw new Error(e)
 
     }

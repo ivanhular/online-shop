@@ -18,7 +18,7 @@ router.post('/users', async (req, res) => {
 
         const token = await user.generateAuthToken()
 
-        return res.status(201).send({ user, token })
+        return res.status(201).send({ message: 'Account successfully created.', user, token })
 
     } catch (e) {
         res.status(400).send({ error: e })
@@ -45,7 +45,7 @@ router.get('/users/:id', [auth, isAdmin], async (req, res) => {
         }
         res.send(user)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 
 })
@@ -76,10 +76,10 @@ router.patch('/users/:id', [auth], async (req, res) => {
 
         await user.save()
 
-        res.send(user)
+        res.send({ message: 'Account Updated!', user })
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
@@ -89,10 +89,10 @@ router.delete('/users/:id', [auth, isAdmin], async (req, res) => {
     try {
         const user = await User.isValidID(req.params.id) ? await User.findByIdAndDelete(req.params.id) : ""
 
-        res.send(user)
+        res.send({ message: 'Account Deleted!', user })
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
     }
 })
 
@@ -126,7 +126,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send(e)
+        res.status(500).send({ message: e.message })
 
     }
 })
