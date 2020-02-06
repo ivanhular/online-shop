@@ -46,12 +46,13 @@ categorySchema.methods.toJSON = function () {
 
     categoryObject = category.toObject()
 
-    categoryObject.photos.forEach(photo => {
+    if (categoryObject.photos) {
+        categoryObject.photos.forEach(photo => {
 
-        delete photo.photo
+            delete photo.photo
 
-    })
-
+        })
+    }
 
     return categoryObject
 

@@ -88,7 +88,9 @@ router.patch('/categories/:id', [auth, isAdmin], upload.array('photos', 12), asy
             category[update] = req.body[update]
         })
 
-        category.segment_id = JSON.parse(req.body.segment_id)
+        if (req.body.segment_id) {
+            category.segment_id = JSON.parse(req.body.segment_id)
+        }
 
         await category.save()
 
