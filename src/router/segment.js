@@ -13,7 +13,7 @@ router.post('/segments', [auth, isAdmin], upload.array('photos', 12), async (req
 
     try {
 
-        await saveOptimizedImage(segment, req.files)
+        await saveOptimizedImage(segment, req)
 
         await segment.save()
 
@@ -115,7 +115,7 @@ router.patch('/segments/:id', [auth, isAdmin], upload.array('photos', 12), async
             return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
-        await saveOptimizedImage(segment, req.files)
+        await saveOptimizedImage(segment, req)
 
         getObjectProps(req.body).forEach(update => {
             segment[update] = req.body[update]

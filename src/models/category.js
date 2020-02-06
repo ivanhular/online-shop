@@ -32,6 +32,9 @@ const categorySchema = new mongoose.Schema({
             featured: {
                 type: Boolean,
                 default: false
+            },
+            url: {
+                type: String
             }
         }
     ]

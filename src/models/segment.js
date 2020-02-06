@@ -3,10 +3,10 @@ const mongoose = require('mongoose')
 const segmentSchema = new mongoose.Schema({
     segment_name: {
         type: String,
-        unique:true,
+        unique: true,
         required: true,
-        lowercase:true,
-        trim:true
+        lowercase: true,
+        trim: true
     },
     photos: [
         {
@@ -24,6 +24,9 @@ const segmentSchema = new mongoose.Schema({
             featured: {
                 type: Boolean,
                 default: false
+            },
+            url: {
+                type: String
             }
         }
     ]
