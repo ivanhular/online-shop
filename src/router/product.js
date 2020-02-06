@@ -127,7 +127,7 @@ router.get('/products', async (req, res) => {
 })
 
 //GET product by ID
-router.get('/products/:id', auth, async (req, res) => {
+router.get('/products/:id', async (req, res) => {
 
     const product = await Product.isValidID(req.params.id)
 
@@ -146,7 +146,7 @@ router.get('/products/:id', auth, async (req, res) => {
 })
 
 //Product Search
-router.post('/products/search', auth, async (req, res) => {
+router.post('/products/search', async (req, res) => {
     try {
 
         if (!req.body.search) {
@@ -175,7 +175,7 @@ router.post('/products/search', auth, async (req, res) => {
 })
 
 //Hint
-router.post('/products/search/hint', auth, async (req, res) => {
+router.post('/products/search/hint', async (req, res) => {
     try {
 
         if (!req.body.search) {

@@ -29,7 +29,7 @@ router.post('/segments', [auth, isAdmin], upload.array('photos', 12), async (req
 })
 
 //GET
-router.get('/segments', auth, async (req, res) => {
+router.get('/segments', async (req, res) => {
     try {
 
         const segment = await Segment.find()
@@ -44,7 +44,7 @@ router.get('/segments', auth, async (req, res) => {
 })
 
 //Serve segment Image/s
-router.get('/segments/:id/:photo', auth, async (req, res) => {
+router.get('/segments/:id/:photo', async (req, res) => {
     try {
         const segment = await Segment.findById(req.params.id)
 
@@ -65,7 +65,7 @@ router.get('/segments/:id/:photo', auth, async (req, res) => {
 })
 
 //GET /segments/:id
-router.get('/segments/:id', auth, async (req, res) => {
+router.get('/segments/:id', async (req, res) => {
     try {
 
         const segment = await Segment.isValidID(req.params.id)

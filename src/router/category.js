@@ -29,7 +29,7 @@ router.post('/categories', [auth, isAdmin], upload.array('photos', 12), async (r
 })
 
 //GET
-router.get('/categories', [auth], async (req, res) => {
+router.get('/categories', async (req, res) => {
     try {
 
         const category = await Category.find()
@@ -44,7 +44,7 @@ router.get('/categories', [auth], async (req, res) => {
 })
 
 //Serve category Image/s
-router.get('/categories/:id/:photo', [auth], async (req, res) => {
+router.get('/categories/:id/:photo', async (req, res) => {
     try {
         const category = await Category.findById(req.params.id)
 
