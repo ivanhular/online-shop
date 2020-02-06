@@ -66,7 +66,7 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?segmentid=id&categoryid=id
 // GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortBy=createdAt:desc&limit=0&skip=1&featured=true
 // GET products 
-router.get('/products', auth, async (req, res) => {
+router.get('/products', async (req, res) => {
 
     const match = {}
     const limit = {
