@@ -15,6 +15,7 @@ Products
 - Filter(Segment,Category,Newly Created)
 - Dynamic content-type for image rendering(DONE)
 - allow updates of photos(DONE)
+- add unisex products categories
 
 
 Segments / Category

@@ -11,7 +11,7 @@ router.post('/categories', [auth, isAdmin], upload.array('photos', 12), async (r
 
     try {
 
-        await saveOptimizedImage(category, req.files)
+        await saveOptimizedImage(category, req)
 
         category.segment_id = JSON.parse(req.body.segment_id)
 
@@ -82,13 +82,15 @@ router.patch('/categories/:id', [auth, isAdmin], upload.array('photos', 12), asy
             return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
-        await saveOptimizedImage(category, req.files)
+        await saveOptimizedImage(category, req)
 
         getObjectProps(req.body).forEach(update => {
             category[update] = req.body[update]
         })
 
-        category.segment_id = JSON.parse(req.body.segment_id)
+        if (req.body.segment_id) {
+            category.segment_id = JSON.parse(req.body.segment_id)
+        }
 
         await category.save()
 

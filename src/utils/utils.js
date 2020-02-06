@@ -25,7 +25,7 @@ const saveOptimizedImage = async function (modelObj, req) { //params Model and p
             // const optimizedImage = await product.optimizedImage(photo.buffer)
 
             const imageBuffer = await sharp(photo.buffer)
-                .resize(250, 250)
+                // .resize(250, 250)
                 .jpeg()
                 .toBuffer()
 

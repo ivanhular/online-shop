@@ -14,7 +14,7 @@ router.post('/products', [auth, isAdmin], upload.array('photos', 12), async (req
 
     try {
 
-        await saveOptimizedImage(product, req.files)
+        await saveOptimizedImage(product, req)
         // console.log(req.body.variations)
 
         if (req.body.price_options) {
