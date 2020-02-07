@@ -16,17 +16,19 @@ const upload = multer({
 
 const saveOptimizedImage = async function (modelObj, req) { //params Model and photo files
 
-    const { files } = req
+    const { files, protocol } = req
+
 
     try {
 
         const photos = files.map(async (photo) => {
 
             // const optimizedImage = await product.optimizedImage(photo.buffer)
+            const ext = photo.originalname.ind
 
             const imageBuffer = await sharp(photo.buffer)
                 // .resize(250, 250)
-                .jpeg()
+                // .jpeg()
                 .toBuffer()
 
             // console.log(photo)
@@ -36,7 +38,7 @@ const saveOptimizedImage = async function (modelObj, req) { //params Model and p
                 photo: imageBuffer,
                 name: photo.originalname,
                 mimetype: photo.mimetype,
-                url: `${req.headers.host}/${modelObj.collection.collectionName}/${modelObj._id}/${photo.originalname}`
+                url: `${protocol}://${req.headers.host}/${modelObj.collection.collectionName}/${modelObj._id}/${photo.originalname}`
             }
 
         })

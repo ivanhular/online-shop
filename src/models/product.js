@@ -100,6 +100,8 @@ productSchema.methods.toJSON = function () {
         productObject = product.toObject()
 
         // delete productObject.photos.photo
+        delete productObject.markup
+
         if (productObject.photos) {
             productObject.photos.forEach(photo => {
                 delete photo.photo
