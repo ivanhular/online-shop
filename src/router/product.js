@@ -50,6 +50,10 @@ router.get('/products/:id/:photo', async (req, res) => {
 
         const photo = product.photos.find((photo) => photo.name === req.params.photo)
 
+        if (!photo) {
+            throw new Error('No photo found')
+        }
+
         res.set('Content-type', photo.mimetype)
 
         res.send(photo.photo)
