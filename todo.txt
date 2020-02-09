@@ -57,6 +57,6 @@ Notification
 
 
 Update
-- Protocol 
-- Image background
-- markup
+- Protocol (DONE) Update to dynamically change URL once live
+- Image background(DONE)
+- markup(DONE)

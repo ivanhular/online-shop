@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const Product = require('../models/product')
 const Category = require('../models/category')
 const Segment = require('../models/segment')
-const { auth, isAdmin } = require('../middleware/auth')
+const Log = require('../models/log')
+const { auth, isAdmin, getUserIfAuth } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
 
@@ -150,16 +151,50 @@ router.get('/products/:id', async (req, res) => {
 })
 
 //Product Search
-router.post('/products/search', async (req, res) => {
+router.post('/products/search', getUserIfAuth, async (req, res) => {
     try {
 
         if (!req.body.search) {
             return res.status(404).send({ message: 'Enter Search Keyword' })
         }
 
+        if (req.user._id) {
+
+            const date = new Date()
+
+            const userLog = await Log.findOne({ user_id: req.user._id })
+
+            if (!userLog) {
+
+                const log = new Log({
+                    user_id: req.user._id,
+                    logs: [{
+                        log_name: 'search',
+                        log_data: req.body.search,
+                        createdAt: date.getTime()
+                    }]
+                })
+
+                await log.save()
+
+            } else {
+
+                userLog.logs = userLog.logs.concat({
+                    log_name: 'search',
+                    log_data: req.body.search,
+                    createdAt: date.getTime()
+                })
+
+                await userLog.save()
+
+            }
+
+        }
+
+
         const searchResult = await Product.find({
             $text: {
-                $search: `"${req.body.search}"`
+                $search: `"^${req.body.search}"`
             }
         }, 'product_name', {
             limit: 20
@@ -204,6 +239,26 @@ router.post('/products/search/hint', async (req, res) => {
         // console.log(searchResult)
         res.send(searchResult)
 
+    } catch (e) {
+        res.status(500).send({ message: e.message })
+    }
+})
+
+//Recent Search
+router.post('/products/search/recent', getUserIfAuth, async (req, res) => {
+
+    try {
+        if (req.user._id) {
+
+            const userLog = await Log.find({ user_id: req.user._id, 'logs.log_name': 'search' })
+
+            if (!userLog) {
+                return res.send({ message: 'No recent Search' })
+            }
+
+            res.send(userLog[0].logs.sort((a, b) => b.createdAt - a.createdAt)) //sort descending
+
+        }
     } catch (e) {
         res.status(500).send({ message: e.message })
     }

@@ -7,6 +7,7 @@ const productRouter = require('./router/product')
 const segmentRouter = require('./router/segment')
 const categoryRouter = require('./router/category') 
 const wishRouter = require('./router/wish') 
+const orderRouter = require('./router/order') 
 
 
 const {
@@ -33,6 +34,7 @@ app.use(categoryRouter)
 app.use(segmentRouter)
 app.use(productRouter)
 app.use(wishRouter)
+app.use(orderRouter)
 
 // app.get('/', (req, res) => {
 //     sess = req.session

@@ -28,6 +28,28 @@ const auth = async (req, res, next) => {
     }
 }
 
+
+const getUserIfAuth = async (req, res, next) => {
+
+    try {
+
+        const token = req.header('Authorization').replace('Bearer ', '')
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
+
+        req.token = token
+        req.user = user
+
+        next()
+
+
+    } catch (e) {
+        res.status(401).send({ message: e.message })
+    }
+}
+
+
+
 const isAdmin = async (req, res, next) => {
 
     const authrizedRole = ['owner', 'admin']
@@ -51,5 +73,6 @@ const isAdmin = async (req, res, next) => {
 
 module.exports = {
     auth,
-    isAdmin
+    isAdmin,
+    getUserIfAuth
 }

@@ -19,15 +19,26 @@ router.post('/wishlist', auth, async (req, res) => {
 
             await wish.save()
 
-            return res.status(201).send(wish)
+            return res.status(201).send({ message: 'Added to wishlist', wish })
 
         } else {
 
-            wishlist.products = wishlist.products.concat(req.body.products)
+            const { products } = req.body //get all request products
+
+            //check if theres some existing product on the list
+            products.forEach(reqProduct => {
+
+                const isListed = wishlist.products.find(listedProduct => listedProduct.product_id == reqProduct.product_id)
+
+                //if not listed add to wishlist
+                if (!isListed) {
+                    wishlist.products = wishlist.products.concat(reqProduct)
+                }
+            })
 
             await wishlist.save()
 
-            return res.send(wishlist)
+            return res.send({ message: 'Added to wishlist', wishlist })
         }
 
     } catch (e) {
@@ -45,7 +56,7 @@ router.get('/wishlist', auth, async (req, res) => {
             return res.send({ message: 'No wish list' })
         }
 
-        res.send(wishlist)
+        res.send({ wishlist })
 
     } catch (e) {
 
@@ -54,6 +65,7 @@ router.get('/wishlist', auth, async (req, res) => {
     }
 })
 
+//Delete by product item ID from list
 router.delete('/wishlist', auth, async (req, res) => {
 
     try {
@@ -72,7 +84,7 @@ router.delete('/wishlist', auth, async (req, res) => {
 
         await wishlist.save()
 
-        res.send(wishlist)
+        res.send({ message: 'Wishlist deleted', wishlist })
 
     } catch (e) {
         res.status(500).send({ message: e.message })
@@ -90,7 +102,7 @@ router.delete('/wishlist/all', auth, async (req, res) => {
             return res.status(404).send({ message: 'No Wishlist found' })
         }
 
-        res.send({ message: 'Successfully deleted', wishlist })
+        res.send({ message: 'All wish deleted', wishlist })
 
     } catch (e) {
         res.status(500).send({ message: e.message })

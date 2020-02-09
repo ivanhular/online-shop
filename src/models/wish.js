@@ -15,19 +15,26 @@ const wishSchema = new mongoose.Schema({
                 required: true,
                 ref: 'Product'
             },
+            product_name: {
+                type: String,
+                required: true,
+                trim: true
+            },
             price: {
-                type: Number
-            },
-            discount: {
-                type: Number
-            },
-            quantity: {
                 type: Number
             },
             thumbnail: {
                 type: String,
                 required: true
             }
+            // ,
+            // discount: {
+            //     type: Number
+            // },
+            // quantity: {
+            //     type: Number
+            // },
+
         }
     ]
 })
@@ -38,7 +45,12 @@ wishSchema.pre('save', async function (next) {
 
     try {
 
+        wishlist.products.forEach(element => {
+
+        });
         const thumbnail = await Product.findById(this)
+
+        console.log()
 
         // wishlist.thumbnail = wi
 

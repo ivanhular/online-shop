@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        minlength: [6,'Password minimun of 6 characters'],
+        minlength: [6,'Password minimun of 6 characters'], // minimum  6 characters with a number and a letter
         trim: true,
         validate(value) {
             if (value.includes('password')) {
