@@ -21,6 +21,10 @@ const saveOptimizedImage = async function (modelObj, req) { //params Model and p
 
     try {
 
+        if (files.length === 0) {
+            return
+        }
+
         const photos = files.map(async (photo) => {
 
             // const optimizedImage = await product.optimizedImage(photo.buffer)

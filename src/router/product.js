@@ -196,7 +196,7 @@ router.post('/products/search', getUserIfAuth, async (req, res) => {
             $text: {
                 $search: `"^${req.body.search}"`
             }
-        }, 'product_name', {
+        }, null, {
             limit: 20
         })
         // // .explain('executionStats')
@@ -290,7 +290,9 @@ router.patch('/products/:id', [auth, isAdmin], upload.array('photos', 12), async
             return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
 
+
         await saveOptimizedImage(product, req)
+
 
         getObjectProps(req.body).forEach(update => {
 
@@ -316,6 +318,7 @@ router.patch('/products/:id', [auth, isAdmin], upload.array('photos', 12), async
     }
 
 })
+
 
 
 //DELETE product by ID 
