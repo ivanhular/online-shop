@@ -31,10 +31,6 @@ const productSchema = new mongoose.Schema({
     supplier_price: {
         type: Number
     },
-    product_price: {
-        type: Number,
-        required: true
-    },
     markup: {
         type: Number,
         required: true
@@ -69,6 +65,10 @@ const productSchema = new mongoose.Schema({
     }],
     price_options: [
         {
+            variation_name: {
+                type: String,
+                required: true
+            },
             options: [
                 {
                     option_name: {
@@ -101,6 +101,7 @@ productSchema.methods.toJSON = function () {
 
         // delete productObject.photos.photo
         delete productObject.markup
+        delete productObject.discount
 
         if (productObject.photos) {
             productObject.photos.forEach(photo => {
