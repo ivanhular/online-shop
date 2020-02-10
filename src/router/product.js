@@ -213,7 +213,7 @@ router.post('/products/search', getUserIfAuth, async (req, res) => {
     }
 })
 
-//Hint
+//Search Hint
 router.post('/products/search/hint', async (req, res) => {
     try {
 
@@ -235,8 +235,7 @@ router.post('/products/search/hint', async (req, res) => {
         if (searchResult.length === 0) {
             return res.send({ message: 'No result Found' })
         }
-        // // .explain('executionStats')
-        // console.log(searchResult)
+
         res.send(searchResult)
 
     } catch (e) {
@@ -248,6 +247,7 @@ router.post('/products/search/hint', async (req, res) => {
 router.post('/products/search/recent', getUserIfAuth, async (req, res) => {
 
     try {
+
         if (req.user._id) {
 
             const userLog = await Log.find({ user_id: req.user._id, 'logs.log_name': 'search' })
@@ -259,6 +259,9 @@ router.post('/products/search/recent', getUserIfAuth, async (req, res) => {
             res.send(userLog[0].logs.sort((a, b) => b.createdAt - a.createdAt)) //sort descending
 
         }
+
+        return res.send({ message: 'Account not registered' })
+
     } catch (e) {
         res.status(500).send({ message: e.message })
     }
@@ -286,7 +289,6 @@ router.patch('/products/:id', [auth, isAdmin], upload.array('photos', 12), async
         if (!isAllowedUpdate) {
             return res.status(400).send({ message: `Invalid field/s: ${filterInvalidUpdate.join(', ')}` })
         }
-
 
         await saveOptimizedImage(product, req)
 

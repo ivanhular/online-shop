@@ -16,6 +16,7 @@ Products
 - Dynamic content-type for image rendering(DONE)
 - allow updates of photos(DONE)
 - add unisex products categories
+- Update Variations
 
 
 Segments / Category
@@ -40,7 +41,7 @@ Search
 - save all search history then create a filter that will feed base on interest
 
 Logs
--create activity logs collection (monitor search and user activities)
+- create activity logs collection (monitor search and user activities)
 -
 
 
@@ -51,6 +52,7 @@ Transaction / Orders
 
 
 Supplier
+- Create supplier CRUD endpoints
 
 Notification
 - Return Notification
@@ -60,3 +62,4 @@ Update
 - Protocol (DONE) Update to dynamically change URL once live
 - Image background(DONE)
 - markup(DONE)
+- Discount
