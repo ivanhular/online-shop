@@ -158,8 +158,10 @@ router.post('/products/search', getUserIfAuth, async (req, res) => {
             return res.status(404).send({ message: 'Enter Search Keyword' })
         }
 
-        if (req.user._id) {
-
+        
+        if (req.user) {
+            
+            console.log(req.user._id)
             const date = new Date()
 
             const userLog = await Log.findOne({ user_id: req.user._id })
