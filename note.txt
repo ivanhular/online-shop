@@ -6,3 +6,13 @@ https://savvyapps.com/blog/how-to-build-restful-api-mobile-app
 Heroku
 https://devcenter.heroku.com/articles/config-vars 
 https://devcenter.heroku.com/articles/getting-started-with-nodejs
+
+
+MongoDB commandLineTools
+Import/export
+https://stackoverflow.com/questions/11041614/how-do-i-export-dump-mongodb-database
+https://cloud.mongodb.com/v2/5e17d0f2a6f239f4bbff744a#clusters/commandLineTools/Cluster0
+
+
+Express react
+https://daveceddia.com/deploy-react-express-app-heroku/

@@ -35,10 +35,10 @@ Segments / Category
 
 Search 
 - Create a flexible search endpoint https://code.tutsplus.com/tutorials/full-text-search-in-mongodb--cms-24835
-- add filters for (Newly added , lowest price , highest price )
 - update search using fulltextsearch (DONE)
 - make /search endpoint as /hint (DONE)
 - save all search history then create a filter that will feed base on interest
+- add filters for (Newly added , lowest price , highest price )
 
 Logs
 - create activity logs collection (monitor search and user activities)
