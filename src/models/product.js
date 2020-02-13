@@ -31,6 +31,9 @@ const productSchema = new mongoose.Schema({
     supplier_price: {
         type: Number
     },
+    product_price: {
+        type: Number
+    },
     markup: {
         type: Number,
         required: true

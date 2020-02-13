@@ -69,7 +69,7 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?status=true
 // GET /products?sortBy=createdAt:desc
 // GET /products?segmentid=id&categoryid=id
-// GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortBy=createdAt:desc&limit=0&skip=1&featured=true
+// GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortByDate=createdAt:desc&sortByPrice=price:desc&limit=0&skip=1&featured=true
 // GET products 
 router.get('/products', async (req, res) => {
 
@@ -93,10 +93,16 @@ router.get('/products', async (req, res) => {
             skip.skip = parseInt(req.query.skip)
         }
 
-        if (req.query.sortBy) {
-            const parts = req.query.sortBy.split(":")
+        if (req.query.sortByDate) {
+            let parts = req.query.sortByDate.split(":")
             sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
         }
+
+        if (req.query.sortBy) {
+            let parts = req.query.sortBy.split(":")
+            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+        }
+
 
         if (req.query.status) {
             match.status = req.query.status
@@ -123,6 +129,17 @@ router.get('/products', async (req, res) => {
             skip: skip.skip,
             sort
         })
+
+        if (req.query.sortByPrice) {
+            let parts = req.query.sortBy.split(":")
+            const order = parts[1] === 'desc' ? -1 : 1
+
+            if(order){
+                return res.send(product.sort((a, b) => a.price_options.options.price - b.price_options.options.price))
+            }
+
+            return res.send(product.sort((a, b) => b.price_options.options.price - a.price_options.options.price))
+        }
 
         res.send(products)
 
@@ -158,7 +175,7 @@ router.post('/products/search', getUserIfAuth, async (req, res) => {
             return res.status(404).send({ message: 'Enter Search Keyword' })
         }
 
-        if (req.user._id) {
+        if (req.user) {
 
             const date = new Date()
 

@@ -17,6 +17,7 @@ Products
 - allow updates of photos(DONE)
 - add unisex products categories
 - Update Variations
+- test thousand product
 
 
 Segments / Category
