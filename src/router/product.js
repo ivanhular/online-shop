@@ -182,6 +182,7 @@ router.post('/products/search', getUserIfAuth, async (req, res) => {
             return res.status(404).send({ message: 'Enter Search Keyword' })
         }
 
+
         if (req.user) {
 
             const date = new Date()
