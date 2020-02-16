@@ -53,7 +53,6 @@ const productSchema = new mongoose.Schema({
         },
         mimetype: {
             type: String,
-            required: true
         },
         featured: {
             type: Boolean,
@@ -76,7 +75,7 @@ const productSchema = new mongoose.Schema({
                         required: true
                     },
                     price: {
-                        type: Number,
+                        type: mongoose.SchemaTypes.Decimal128,
                         required: true
                     }
                 }
@@ -110,7 +109,7 @@ productSchema.methods.toJSON = function () {
         if (productObject.photos) {
             productObject.photos.forEach(photo => {
                 photo.url = `${domain}${photo.url}`
-                delete photo.photo
+                // delete photo.photo
             })
         }
 

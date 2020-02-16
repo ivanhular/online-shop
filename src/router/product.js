@@ -78,7 +78,7 @@ router.get('/products', async (req, res) => {
         limit: 20
     }
     const sort = {
-        createdAt: -1
+        // createdAt: -1
     }
     const skip = {}
 
@@ -94,15 +94,9 @@ router.get('/products', async (req, res) => {
         }
 
         if (req.query.sortByDate) {
-            let parts = req.query.sortByDate.split(":")
+            const parts = req.query.sortByDate.split(":")
             sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
         }
-
-        if (req.query.sortBy) {
-            let parts = req.query.sortBy.split(":")
-            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
-        }
-
 
         if (req.query.status) {
             match.status = req.query.status
