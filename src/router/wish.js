@@ -7,7 +7,6 @@ const { auth } = require('../middleware/auth')
 router.post('/wishlist', auth, async (req, res) => {
     try {
 
-
         let wishlist = await Wish.findOne({ user_id: req.user._id })
 
         if (!wishlist) {

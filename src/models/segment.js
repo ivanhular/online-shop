@@ -43,9 +43,13 @@ segmentSchema.methods.toJSON = function () {
 
     const segment = this
 
+    const domain = process.env.NODE_ENV === 'production' ? process.env.DOMAIN : `localhost:${process.env.PORT}`
+
     segmentObject = segment.toObject()
 
     segmentObject.photos.forEach(photo => {
+
+        photo.url = `${domain}${photo.url}`
 
         delete photo.photo
 

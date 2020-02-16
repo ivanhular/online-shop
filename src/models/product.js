@@ -36,15 +36,12 @@ const productSchema = new mongoose.Schema({
     },
     markup: {
         type: Number,
-        required: true
     },
     discount: {
         type: Number,
-        required: true
     },
     weight: {
         type: Number,
-        required: true
     },
     photos: [{
         photo: {
@@ -97,9 +94,13 @@ const productSchema = new mongoose.Schema({
 })
 
 productSchema.methods.toJSON = function () {
+
     const product = this
 
     try {
+
+        const domain = process.env.NODE_ENV === 'production' ? process.env.DOMAIN : `localhost:${process.env.PORT}`
+
         productObject = product.toObject()
 
         // delete productObject.photos.photo
@@ -108,6 +109,7 @@ productSchema.methods.toJSON = function () {
 
         if (productObject.photos) {
             productObject.photos.forEach(photo => {
+                photo.url = `${domain}${photo.url}`
                 delete photo.photo
             })
         }

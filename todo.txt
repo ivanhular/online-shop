@@ -24,6 +24,7 @@ Segments / Category
 //retun categories base on segment ID relationed to categories
 //create virtual for categoriesBysegment 
 -GET /segments/:id - return object of categories
+- category items
 
 //Update endpoint for saving foreign key of segmentID
 -POST /categories
@@ -40,6 +41,7 @@ Search
 - make /search endpoint as /hint (DONE)
 - save all search history then create a filter that will feed base on interest
 - add filters for (Newly added , lowest price , highest price )
+- create filter for returned products 
 
 Logs
 - create activity logs collection (monitor search and user activities)

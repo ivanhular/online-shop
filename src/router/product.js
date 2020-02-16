@@ -69,7 +69,7 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?status=true
 // GET /products?sortBy=createdAt:desc
 // GET /products?segmentid=id&categoryid=id
-// GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortByDate=createdAt:desc&sortByPrice=price:desc&limit=0&skip=1&featured=true
+// GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortByDate=createdAt:desc&sortByPrice=desc&limit=0&skip=1&featured=true
 // GET products 
 router.get('/products', async (req, res) => {
 
@@ -110,19 +110,25 @@ router.get('/products', async (req, res) => {
 
         if (req.query.segmentid) {
             if (!mongoose.Types.ObjectId.isValid(req.query.segmentid)) {
-                return res.status(404).send()
+                return res.status(404).send({ message: 'No match product for this segment' })
             }
             match.segment_id = req.query.segmentid
         }
 
-
         if (req.query.categoryid) {
             if (!mongoose.Types.ObjectId.isValid(req.query.categoryid)) {
-                return res.status(404).send()
+                return res.status(404).send({ message: 'No match product for this category' })
             }
             match.category_id = req.query.categoryid
         }
 
+        if (req.query.search) {
+
+            match.$text = {
+                $search: `"${req.query.search}"`
+            }
+
+        }
 
         const products = await Product.find(match, null, {
             limit: limit.limit,
@@ -131,14 +137,15 @@ router.get('/products', async (req, res) => {
         })
 
         if (req.query.sortByPrice) {
-            let parts = req.query.sortBy.split(":")
-            const order = parts[1] === 'desc' ? -1 : 1
 
-            if(order){
-                return res.send(product.sort((a, b) => a.price_options.options.price - b.price_options.options.price))
+            const order = req.query.sortByPrice
+
+            if (order === 'desc') {
+                return res.send(products.sort((a, b) => b.price_options[0].options[0].price - a.price_options[0].options[0].price))
             }
 
-            return res.send(product.sort((a, b) => b.price_options.options.price - a.price_options.options.price))
+            return res.send(products.sort((a, b) => a.price_options[0].options[0].price - b.price_options[0].options[0].price))
+
         }
 
         res.send(products)
@@ -265,7 +272,7 @@ router.post('/products/search/recent', getUserIfAuth, async (req, res) => {
 
     try {
 
-        if (req.user._id) {
+        if (req.user) {
 
             const userLog = await Log.find({ user_id: req.user._id, 'logs.log_name': 'search' })
 
@@ -273,11 +280,21 @@ router.post('/products/search/recent', getUserIfAuth, async (req, res) => {
                 return res.send({ message: 'No recent Search' })
             }
 
-            res.send(userLog[0].logs.sort((a, b) => b.createdAt - a.createdAt)) //sort descending
+            const allSortedLogs = userLog[0].logs.sort((a, b) => b.createdAt - a.createdAt)
+
+            let recentSearchLog = []
+
+            allSortedLogs.forEach((search, i) => {
+                if (!recentSearchLog.includes(search.log_data)) {
+                    recentSearchLog.push(search.log_data)
+                }
+            })
+
+            return res.send({ recentSearchLog })
 
         }
 
-        return res.send({ message: 'Account not registered' })
+        return res.send({ message: 'User not registered' })
 
     } catch (e) {
         res.status(500).send({ message: e.message })

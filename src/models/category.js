@@ -44,10 +44,15 @@ categorySchema.methods.toJSON = function () {
 
     const category = this
 
+    const domain = process.env.NODE_ENV === 'production' ? process.env.DOMAIN : `localhost:${process.env.PORT}`
+
     categoryObject = category.toObject()
+
 
     if (categoryObject.photos) {
         categoryObject.photos.forEach(photo => {
+
+            photo.url = `${domain}${photo.url}`
 
             delete photo.photo
 

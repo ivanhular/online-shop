@@ -18,7 +18,6 @@ const saveOptimizedImage = async function (modelObj, req) { //params Model and p
 
     const { files, protocol } = req
 
-
     try {
 
         if (files.length === 0) {
@@ -41,7 +40,8 @@ const saveOptimizedImage = async function (modelObj, req) { //params Model and p
                 photo: imageBuffer,
                 name: photo.originalname,
                 mimetype: photo.mimetype,
-                url: `${protocol}://${req.headers.host}/${modelObj.collection.collectionName}/${modelObj._id}/${photo.originalname}`
+                // url: `${protocol}://${domain}/${modelObj.collection.collectionName}/${modelObj._id}/${photo.originalname}`
+                url: `/${modelObj.collection.collectionName}/${modelObj._id}/${photo.originalname}`
             }
 
         })

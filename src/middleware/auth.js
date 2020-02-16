@@ -32,6 +32,7 @@ const auth = async (req, res, next) => {
 const getUserIfAuth = async (req, res, next) => {
 
     try {
+
         if (req.header('Authorization')) {
 
             const token = req.header('Authorization').replace('Bearer ', '')
@@ -40,14 +41,14 @@ const getUserIfAuth = async (req, res, next) => {
 
             req.token = token
             req.user = user
-            
+
         }
 
         next()
 
 
     } catch (e) {
-        res.status(401).send({ message: e.message })
+        res.send({ message: e.message })
     }
 }
 
