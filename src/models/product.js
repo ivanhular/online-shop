@@ -109,7 +109,7 @@ productSchema.methods.toJSON = function () {
         if (productObject.photos) {
             productObject.photos.forEach(photo => {
                 photo.url = `${domain}${photo.url}`
-                delete photo.photo
+                // delete photo.photo
             })
         }
 
