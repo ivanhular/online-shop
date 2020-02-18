@@ -12,9 +12,9 @@ const generateProduct = async (noOfProduct) => {
         const bulkProduct = []
         const categories = ['5e3aa638ba4e2e3714db1815', '5e3beaf8d55ed331740934f4']
         const segments = ['5e3be986ff289e1b141ae9f7', '5e3a9c36463a5e0017645ae9', '5e3a9c3d463a5e0017645aea']
-        let imageBuffer1 = await fs.readFileSync(path.join(__dirname, "../../../img/1.png"))
-        let imageBuffer2 = await fs.readFileSync(path.join(__dirname, "../../../img/2.png"))
-        let imageBuffer3 = await fs.readFileSync(path.join(__dirname, "../../../img/4.png"))
+        let imageBuffer1 = fs.readFileSync(path.join(__dirname, "../../../img/1.png"))
+        let imageBuffer2 = fs.readFileSync(path.join(__dirname, "../../../img/2.png"))
+        let imageBuffer3 = fs.readFileSync(path.join(__dirname, "../../../img/4.png"))
 
 
         // const ImageBinary = Buffer.from(imageBuffer).toString('binary')
@@ -38,10 +38,12 @@ const generateProduct = async (noOfProduct) => {
 
             let id = new mongoose.Types.ObjectId()
 
+            let date = new Date()
+
             let newProduct = {
-                // _id: {
-                //     $oid: id
-                // },
+                _id: {
+                    $oid: id
+                },
                 product_name: faker.commerce.productName(),
                 product_descriptions: 'This is a sample content not meant to read',
                 markup: {
@@ -57,95 +59,84 @@ const generateProduct = async (noOfProduct) => {
                 status: 'true',
                 price_options: [
                     {
-                        "variation_name": "small",
-                        "options": [
+                        variation_name: "small",
+                        options: [
                             {
 
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(500, 600)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(500, 600)
                             },
                             {
                                 // "_id": {
                                 //     "$oid": "5e48e1ca2290863d88252620"
                                 // },
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(600, 700)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(600, 700)
+
                             },
                             {
                                 // "_id": {
                                 //     "$oid": "5e48e1ca2290863d88252620"
                                 // },
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(800, 1000)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(800, 1000)
+
                             }
                         ]
                     },
                     {
-                        "variation_name": "medium",
-                        "options": [
+                        variation_name: "medium",
+                        options: [
                             {
 
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(500, 600)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(500, 600)
                             },
                             {
                                 // "_id": {
                                 //     "$oid": "5e48e1ca2290863d88252620"
                                 // },
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(600, 700)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(600, 700)
+
                             },
                             {
                                 // "_id": {
                                 //     "$oid": "5e48e1ca2290863d88252620"
                                 // },
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(800, 1000)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(800, 1000)
+
                             }
                         ]
                     },
                     {
-                        "variation_name": "large",
-                        "options": [
+                        variation_name: "large",
+                        options: [
                             {
 
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(500, 600)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(500, 600)
                             },
                             {
                                 // "_id": {
                                 //     "$oid": "5e48e1ca2290863d88252620"
                                 // },
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(600, 700)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(600, 700)
+
                             },
                             {
                                 // "_id": {
                                 //     "$oid": "5e48e1ca2290863d88252620"
                                 // },
-                                "option_name": faker.commerce.color(),
-                                "price": {
-                                    "$numberDouble": faker.commerce.price(800, 1000)
-                                }
+                                option_name: faker.commerce.color(),
+                                price: faker.commerce.price(800, 1000)
+
                             }
                         ]
-                    }
+                    },
+
 
                 ],
                 photos: [
@@ -163,7 +154,7 @@ const generateProduct = async (noOfProduct) => {
                         featured: 'true',
                         name: "1.png",
                         mimetype: "image/png",
-                        url: "/products/5e47ee0486269d44b4a0285d/1.png"
+                        url: `/products/${id}/1.png`
                     }
                 ],
                 segment_id: {
@@ -171,6 +162,16 @@ const generateProduct = async (noOfProduct) => {
                 },
                 category_id: {
                     $oid: categories[Math.floor(Math.random() * categories.length)]
+                },
+                createdAt: {
+                    $date: {
+                        $numberLong: `${date.getTime()}`
+                    }
+                },
+                updatedAt: {
+                    $date: {
+                        $numberLong: `${date.getTime()}`
+                    }
                 }
             }
             // bulkProduct.push({
@@ -182,9 +183,9 @@ const generateProduct = async (noOfProduct) => {
             // console.log(imagesArrayBinary[Math.floor(Math.random() * imagesArrayBinary.length)])
         }
 
-        console.log(bulkProduct)
+        // console.log(bulkProduct)
 
-        await fs.writeFileSync('products.json', JSON.stringify(bulkProduct))
+        fs.writeFileSync('products.json', JSON.stringify(bulkProduct))
         // fs.writeFileSync('products.json', bulkProduct)
 
         // console.log(bulkProduct)

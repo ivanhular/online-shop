@@ -75,7 +75,7 @@ const productSchema = new mongoose.Schema({
                         required: true
                     },
                     price: {
-                        type: mongoose.SchemaTypes.Decimal128,
+                        type: mongoose.SchemaTypes.Mixed,
                         required: true
                     }
                 }
@@ -112,7 +112,7 @@ productSchema.methods.toJSON = function () {
                 delete photo.photo
             })
         }
-
+  
         return productObject
 
 

@@ -33,8 +33,6 @@ const saveOptimizedImage = async function (modelObj, req) { //params Model and p
                 // .jpeg()
                 .toBuffer()
 
-            console.log(photo)
-
             return {
                 // photo: photo.buffer,
                 photo: imageBuffer,

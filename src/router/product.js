@@ -78,7 +78,7 @@ router.get('/products', async (req, res) => {
         limit: 20
     }
     const sort = {
-        // createdAt: -1
+        createdAt: -1
     }
     const skip = {}
 
@@ -93,10 +93,10 @@ router.get('/products', async (req, res) => {
             skip.skip = parseInt(req.query.skip)
         }
 
-        if (req.query.sortByDate) {
-            const parts = req.query.sortByDate.split(":")
-            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
-        }
+        // if (req.query.sortByDate) {
+        //     const parts = req.query.sortByDate.split(":")
+        //     sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+        // }
 
         if (req.query.status) {
             match.status = req.query.status
@@ -127,8 +127,17 @@ router.get('/products', async (req, res) => {
         const products = await Product.find(match, null, {
             limit: limit.limit,
             skip: skip.skip,
-            sort
         })
+
+        if (req.query.sortByDate) {
+            const order = req.query.sortByDate
+
+            if (order === 'desc') {
+                return res.send(products.sort((a, b) => b.createdAt - a.createdAt))
+            }
+
+            return res.send(products.sort((a, b) => a.createdAt - b.createdAt))
+        }
 
         if (req.query.sortByPrice) {
 
