@@ -27,7 +27,10 @@ const wishSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-            variation: String
+            variation: {
+                type: String,
+                required: true
+            }
 
         }
     ]

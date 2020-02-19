@@ -7,7 +7,9 @@ const productSchema = new mongoose.Schema({
     product_name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        // unique:true
+
     },
     featured: {
         type: Boolean

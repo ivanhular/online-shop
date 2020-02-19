@@ -16,3 +16,11 @@ https://cloud.mongodb.com/v2/5e17d0f2a6f239f4bbff744a#clusters/commandLineTools/
 
 Express react
 https://daveceddia.com/deploy-react-express-app-heroku/
+
+
+Cache
+https://www.youtube.com/watch?v=oaJq1mQ3dFI
+
+
+GTAGMANGER | GA 
+https://www.analyticsmania.com/post/google-tag-manager-vs-google-analytics/

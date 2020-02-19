@@ -205,7 +205,7 @@ const generateProduct = async (noOfProduct) => {
     }
 }
 
-const products = generateProduct(3000).then(data => {
+const products = generateProduct(1).then(data => {
 
     // console.log(data)
 
