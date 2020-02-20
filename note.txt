@@ -17,6 +17,9 @@ https://cloud.mongodb.com/v2/5e17d0f2a6f239f4bbff744a#clusters/commandLineTools/
 Express react
 https://daveceddia.com/deploy-react-express-app-heroku/
 
+Reverse proxy Multiple APPS
+https://itnext.io/hosting-multiple-apps-on-the-same-server-implement-a-reverse-proxy-with-node-a4e213497345
+
 
 Cache
 https://www.youtube.com/watch?v=oaJq1mQ3dFI

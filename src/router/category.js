@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Category = require('../models/category')
+const Product = require('../models/product')
 const { auth, isAdmin } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
@@ -42,6 +43,51 @@ router.get('/categories', async (req, res) => {
     }
 
 })
+
+//GET
+// router.get('/categories/items', async (req, res) => {
+
+//     const match = {}
+
+//     try {
+
+//         if (req.query.segmentid) {
+//             if (!mongoose.Types.ObjectId.isValid(req.query.segmentid)) {
+//                 return res.status(404).send({ message: 'No match product for this segment' })
+//             }
+//             match.segment_id = req.query.segmentid
+//         }
+
+//         if (req.query.categoryid) {
+//             if (!mongoose.Types.ObjectId.isValid(req.query.categoryid)) {
+//                 return res.status(404).send({ message: 'No match product for this category' })
+//             }
+//             match.category_id = req.query.categoryid
+//         }
+
+//         const aggregate = Model.aggregate([
+//             { $project: { a: 1, b: 1 } },
+//             { $skip: 5 }
+//         ]);
+
+//         db.scores.aggregate(
+//             [
+//                 {
+//                     $match: {
+//                         score: {
+//                             $gt: 80
+//                         }
+//                     }
+//                 },
+//                 {
+//                     $count: "passing_scores"
+//                 }
+//             ]
+//         )
+//     } catch (e) {
+
+//     }
+// })
 
 //Serve category Image/s
 router.get('/categories/:id/:photo', async (req, res) => {
