@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const Segment = require('../models/segment')
 const Category = require('../models/category')
+const Product = require('../models/product')
 const { auth, isAdmin } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 
@@ -89,7 +90,19 @@ router.get('/segments/:id', async (req, res) => {
             }
         }).execPopulate()
 
-        res.send(segment.categoriesBysegment)
+        categories = await Promise.all(segment.categoriesBysegment.map(async (category) => {
+            let noOfProducts = await Product.find({
+                segment_id: req.params.id,
+                category_id: category._id
+
+            }).countDocuments()
+
+
+            return { category, noOfProducts }
+            
+        }))
+
+        res.send(categories)
 
     } catch (e) {
 

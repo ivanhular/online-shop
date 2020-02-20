@@ -48,6 +48,7 @@ categorySchema.methods.toJSON = function () {
 
     categoryObject = category.toObject()
 
+    delete categoryObject.segment_id
 
     if (categoryObject.photos) {
         categoryObject.photos.forEach(photo => {
