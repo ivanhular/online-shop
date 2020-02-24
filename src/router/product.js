@@ -132,15 +132,17 @@ router.get('/products', getUserIfAuth, async (req, res) => {
 
         if (req.user) {
             const wishList = await Wish.findOne({ user_id: req.user._id })
-            if (wishList.products.length > 0) {
-                wishList.products.forEach(wish => {
-                    products.find(product => {
-                        if (product._id.toString() === wish.product_id.toString()) {
-                            product.inWishlist = true
-                        }
-                    })
+            if (wishList) {
+                if (wishList.products.length > 0) {
+                    wishList.products.forEach(wish => {
+                        products.find(product => {
+                            if (product._id.toString() === wish.product_id.toString()) {
+                                product.inWishlist = true
+                            }
+                        })
 
-                })
+                    })
+                }
             }
         }
 
