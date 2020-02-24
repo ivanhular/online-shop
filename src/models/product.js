@@ -130,6 +130,8 @@ productSchema.methods.toJSON = function () {
 
 }
 
+productSchema.virtual('inWishlist')
+
 productSchema.index({ product_name: 'text' })
 
 //Validate ObjectId

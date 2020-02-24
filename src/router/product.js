@@ -135,10 +135,9 @@ router.get('/products', getUserIfAuth, async (req, res) => {
             if (wishList.products.length > 0) {
                 wishList.products.forEach(wish => {
                     products.find(product => {
-                        if (product._id.toString() == wish.product_id.toString()) {
-                            console.log(product)
+                        if (product._id.toString() === wish.product_id.toString()) {
+                          
                         }
-                        
                     })
 
                 })
