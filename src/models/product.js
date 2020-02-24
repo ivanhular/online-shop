@@ -88,10 +88,14 @@ const productSchema = new mongoose.Schema({
     status: {
         type: Boolean,
         default: false
+    },
+    inWishlist: {
+        type: Boolean,
+        default: false
     }
 
 }, {
-    timestamps: true //set Schema Model options
+    timestamps: true, //set Schema Model options
 })
 
 productSchema.methods.toJSON = function () {
@@ -114,7 +118,7 @@ productSchema.methods.toJSON = function () {
                 delete photo.photo
             })
         }
-  
+
         return productObject
 
 
@@ -130,7 +134,7 @@ productSchema.methods.toJSON = function () {
 
 }
 
-productSchema.virtual('inWishlist')
+// productSchema.virtual('inWishlist')
 
 productSchema.index({ product_name: 'text' })
 
