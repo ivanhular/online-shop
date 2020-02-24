@@ -40,8 +40,8 @@ Search
 - update search using fulltextsearch (DONE)
 - make /search endpoint as /hint (DONE)
 - save all search history then create a filter that will feed base on interest
-- add filters for (Newly added , lowest price , highest price )
-- create filter for returned products 
+- add filters for (Newly added , lowest price , highest price )(DONE)
+- create filter for returned products (DONE)
 
 Logs
 - create activity logs collection (monitor search and user activities)
@@ -51,7 +51,7 @@ Logs
 Transaction / Orders
 - Create Order
 - Payment methods
--order filters
+- order filters
 
 
 Supplier
@@ -66,3 +66,6 @@ Update
 - Image background(DONE)
 - markup(DONE)
 - Discount(DONE)
+
+Wishlist
+- Detect active wishlist to products

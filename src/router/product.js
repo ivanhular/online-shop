@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const Product = require('../models/product')
 const Category = require('../models/category')
 const Segment = require('../models/segment')
+const Wish = require('../models/wish')
 const Log = require('../models/log')
 const { auth, isAdmin, getUserIfAuth } = require('../middleware/auth')
 const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
@@ -71,7 +72,7 @@ router.get('/products/:id/:photo', async (req, res) => {
 // GET /products?segmentid=id&categoryid=id
 // GET /products?segmentid=5e10a077ebe80d2e50fe2849&categoryid=5e1ee608d209a806b8fe20c4&sortByDate=createdAt:desc&sortByPrice=desc&limit=0&skip=1&featured=true
 // GET products 
-router.get('/products', async (req, res) => {
+router.get('/products', getUserIfAuth, async (req, res) => {
 
     const match = {}
     const limit = {
@@ -128,6 +129,21 @@ router.get('/products', async (req, res) => {
             limit: limit.limit,
             skip: skip.skip,
         })
+
+        if (req.user) {
+            const wishList = await Wish.findOne({ user_id: req.user._id })
+            if (wishList.products.length > 0) {
+                wishList.products.forEach(wish => {
+                    products.find(product => {
+                        if (product._id.toString() == wish.product_id.toString()) {
+                            console.log(product)
+                        }
+                        
+                    })
+
+                })
+            }
+        }
 
         if (req.query.sortByDate) {
             const order = req.query.sortByDate

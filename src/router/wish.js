@@ -52,7 +52,11 @@ router.get('/wishlist', auth, async (req, res) => {
         const wishlist = await Wish.findOne({ user_id: req.user._id })
 
         if (!wishlist) {
-            return res.send({ message: 'No wish list' })
+            return res.send({ message: 'Empty wish list' })
+        }
+
+        if (wishlist.products.length == 0) {
+            return res.send({ message: 'Empty wish list' })
         }
 
         res.send({ wishlist })
@@ -75,15 +79,21 @@ router.delete('/wishlist', auth, async (req, res) => {
             return res.send({ message: 'No wish list' })
         }
 
-        if (!req.body.product_id) {
-            return res.status(400).send({ message: 'Key product_id required!' })
+        if (!req.body.wish_id) {
+            return res.status(400).send({ message: 'Key wish_id required!' })
         }
 
-        wishlist.products = wishlist.products.filter(product => product._id != req.body.product_id)
+        const inWishlist = wishlist.products.find(wish => wish._id == req.body.wish_id)
+
+        if (!inWishlist) {
+            return res.send({ message: 'No product found in wishlist!' })
+        }
+
+        wishlist.products = wishlist.products.filter(wish => wish._id != req.body.wish_id)
 
         await wishlist.save()
 
-        res.send({ message: 'Wishlist deleted', wishlist })
+        res.send({ message: 'Wishlist deleted', deletedWish: inWishlist })
 
     } catch (e) {
         res.status(500).send({ message: e.message })
