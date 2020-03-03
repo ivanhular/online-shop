@@ -12,31 +12,28 @@ Products
 - Image Compression & Optimization(DONE)
 - Authentication Middleware
 - Add variation(DONE)
-- Filter(Segment,Category,Newly Created)
+- Filter(Segment,Category,Newly Created)(DONE)
 - Dynamic content-type for image rendering(DONE)
 - allow updates of photos(DONE)
 - add unisex products categories
-- Update Variations
+- Update Variations(DONE)
 - test thousand product(DONE)
 
 
 Segments / Category
-//retun categories base on segment ID relationed to categories
-//create virtual for categoriesBysegment 
--GET /segments/:id - return object of categories
+- retun categories base on segment ID relationed to categories
+- create virtual for categoriesBysegment 
+- GET /segments/:id - return object of categories
 - category items
-
-//Update endpoint for saving foreign key of segmentID
--POST /categories
-
-//Create End point that returns product base on selected segment and category
--GET /products/:segmentID/:categoryID
-
-//Update endpoint for saving foreign key of segmentID
--POST /products
+- Update endpoint for saving foreign key of segmentID
+- POST /categories
+- Create End point that returns product base on selected segment and category
+- GET /products/:segmentID/:categoryID
+- Update endpoint for saving foreign key of segmentID
+- POST /products
 
 Search 
-- Create a flexible search endpoint https://code.tutsplus.com/tutorials/full-text-search-in-mongodb--cms-24835
+- Create a flexible search endpoint (DONE) https://code.tutsplus.com/tutorials/full-text-search-in-mongodb--cms-24835
 - update search using fulltextsearch (DONE)
 - make /search endpoint as /hint (DONE)
 - save all search history then create a filter that will feed base on interest
@@ -63,9 +60,9 @@ Notification
 
 Update
 - Protocol (DONE) Update to dynamically change URL once live
-- Image background(DONE)
-- markup(DONE)
-- Discount(DONE)
+- Remove Image background(DONE)
+- Remove from returned JSON markup(DONE)
+- Remove from returned JSON Discount(DONE)
 
 Wishlist
 - Detect active wishlist to products(DONE)

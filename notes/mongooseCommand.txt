@@ -1,0 +1,3 @@
+- Dump data from mongodb Atlas
+mongodump --host Cluster0-shard-0/cluster0-shard-00-00-s7lcm.mongodb.net:27017,cluster0-shard-00-01-s7lcm.mongodb.net:27017,cluster0-shard-00-02-s7lcm.mongodb.net:27017 --ssl --username admin --password admin --authenticationDatabase admin --db owkii-db
+
