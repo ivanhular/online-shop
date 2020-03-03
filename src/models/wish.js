@@ -23,6 +23,9 @@ const wishSchema = new mongoose.Schema({
             price: {
                 type: Number
             },
+            discount: {
+                type: Number
+            },
             thumbnail: {
                 type: String,
                 required: true

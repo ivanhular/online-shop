@@ -60,4 +60,15 @@ module.exports = Order
 // price
 // discount
 // quantity
-//status - Pending / on review / ready / Purchased / Completed
+//status - Pending / on review / ready(approved) / Purchased / Completed
+
+
+//add to cart if no orders yet create order for new transaction (status:Pending)
+//if order exist and status pending add to existing order (status:Pending)
+//user send for review (status:on review)
+//Items and quantity will verified by administrator for approval
+//if approved send the approved orders to client changed to (status:approved)
+//then user will place order client will send data with subtotal or Order Total (status:To shipped)
+
+
+//Payment Method ? 
