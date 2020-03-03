@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
         default: 'Pending'
     },
     subtotal: {
-        type: Number,
+        type: mongoose.SchemaTypes.Mixed,
         required: true
     },
     shipping_fee: {
@@ -32,18 +32,33 @@ const orderSchema = new mongoose.Schema({
                 required: true,
                 ref: 'Product'
             },
+            product_name: {
+                type: String,
+                required: true
+            },
+            variation: {
+                type: String,
+                required: true
+            },
+            thumbnail: {
+                type: String,
+                required: true
+            },
             price: {
-                type: Number
+                type: mongoose.SchemaTypes.Mixed
             },
             discount: {
-                type: Number
+                type: mongoose.SchemaTypes.Mixed
             },
             quantity: {
-                type: Number,
+                type: mongoose.SchemaTypes.Mixed,
                 default: 1
             }
         }
-    ]
+    ],
+    message: {
+        type: String
+    }
 })
 
 const Order = mongoose.model('Order', orderSchema)
@@ -60,15 +75,29 @@ module.exports = Order
 // price
 // discount
 // quantity
-//status - Pending / on review / ready(approved) / Purchased / Completed
+// status - Pending / on review / ready(approved) / Purchased / Completedn
 
 
+//add order button
+//POST /orders
 //add to cart if no orders yet create order for new transaction (status:Pending)
 //if order exist and status pending add to existing order (status:Pending)
+
+
+//Send for review Button
+//PATCH /orders/:id ----- update status on review
 //user send for review (status:on review)
+
+
+//admin
 //Items and quantity will verified by administrator for approval
-//if approved send the approved orders to client changed to (status:approved)
+//PATCH /orders/:id ----- update status approved
+//if approved send the approved orders to client change status to (status:approved)
+
+//Place Order button
 //then user will place order client will send data with subtotal or Order Total (status:To shipped)
+//Enter message
+//Subtotal
 
 
 //Payment Method ? 

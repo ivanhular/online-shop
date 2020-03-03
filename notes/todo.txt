@@ -19,6 +19,8 @@ Products
 - Update Variations(DONE)
 - test thousand product(DONE)
 
+- variation type: color, size
+- global settings(discount)
 
 Segments / Category
 - retun categories base on segment ID relationed to categories
@@ -66,3 +68,4 @@ Update
 
 Wishlist
 - Detect active wishlist to products(DONE)
+

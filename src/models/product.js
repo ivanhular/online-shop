@@ -31,19 +31,19 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
     supplier_price: {
-        type: Number
+        type: mongoose.SchemaTypes.Mixed
     },
     product_price: {
-        type: Number
+        type: mongoose.SchemaTypes.Mixed
     },
     markup: {
-        type: Number,
+        type: mongoose.SchemaTypes.Mixed
     },
     discount: {
-        type: Number,
+        type: mongoose.SchemaTypes.Mixed
     },
     weight: {
-        type: Number,
+        type: mongoose.SchemaTypes.Mixed
     },
     photos: [{
         photo: {
