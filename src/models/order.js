@@ -58,7 +58,12 @@ const orderSchema = new mongoose.Schema({
     ],
     message: {
         type: String
+    },
+    paymentOption: {
+        type: String
     }
+}, {
+    timestamps: true, //set Schema Model options
 })
 
 const Order = mongoose.model('Order', orderSchema)
@@ -97,6 +102,7 @@ module.exports = Order
 //Place Order button
 //then user will place order client will send data with subtotal or Order Total (status:To shipped)
 //Enter message
+//Choose payment method -- payment option
 //Subtotal
 
 

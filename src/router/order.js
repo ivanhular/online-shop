@@ -19,9 +19,30 @@ const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 router.post('/orders', auth, async (req, res) => {
     try {
 
-        const order = Order.findOne({ user_id: req.user._id })
+        // const order = Order.findOne({ user_id: req.user._id })
+
+        const order = await Order.aggregate([
+            {
+                $match: { user_id: req.user._id },
+                $sort: {
+                    createdAt: -1,
+                    limit: 1
+                }
+            }
+        ])
 
         if (!order) {
+
+            const newOrder = new Order({
+                ...req.body,
+                user_id: req.user._id
+            })
+
+            await newOrder.save()
+        }
+
+        if (order.status === 'pending') {
+
             
         }
 
