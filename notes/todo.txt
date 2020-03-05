@@ -51,6 +51,7 @@ Transaction / Orders
 - Create Order
 - Payment methods
 - order filters
+- detect product exist with same variation and add quantity 
 
 
 Supplier

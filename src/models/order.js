@@ -12,14 +12,13 @@ const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        default: 'Pending'
+        default: 'pending'
     },
     subtotal: {
         type: mongoose.SchemaTypes.Mixed,
-        required: true
     },
     shipping_fee: {
-        type: Number,
+        type: mongoose.SchemaTypes.Mixed,
     },
     shipping_address: {
         type: String,
@@ -51,7 +50,7 @@ const orderSchema = new mongoose.Schema({
                 type: mongoose.SchemaTypes.Mixed
             },
             quantity: {
-                type: mongoose.SchemaTypes.Mixed,
+                type: Number,
                 default: 1
             }
         }
@@ -83,13 +82,13 @@ module.exports = Order
 // status - Pending / on review / ready(approved) / Purchased / Completedn
 
 
-//add order button
+//add order button or cart
 //POST /orders
 //add to cart if no orders yet create order for new transaction (status:Pending)
 //if order exist and status pending add to existing order (status:Pending)
 
 
-//Send for review Button
+//Send for review Button or checkout
 //PATCH /orders/:id ----- update status on review
 //user send for review (status:on review)
 
@@ -98,6 +97,7 @@ module.exports = Order
 //Items and quantity will verified by administrator for approval
 //PATCH /orders/:id ----- update status approved
 //if approved send the approved orders to client change status to (status:approved)
+//admin send shipping fee
 
 //Place Order button
 //then user will place order client will send data with subtotal or Order Total (status:To shipped)

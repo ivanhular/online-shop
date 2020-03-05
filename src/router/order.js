@@ -19,17 +19,12 @@ const { getObjectProps, upload, saveOptimizedImage } = require('../utils/utils')
 router.post('/orders', auth, async (req, res) => {
     try {
 
-        // const order = Order.findOne({ user_id: req.user._id })
-
-        const order = await Order.aggregate([
-            {
-                $match: { user_id: req.user._id },
-                $sort: {
-                    createdAt: -1,
-                    limit: 1
-                }
-            }
-        ])
+        const order = Order.findOne({ user_id: req.user._id })
+        // const order = await Order.find({ user_id: req.user._id }, null, {
+        //     sort: {
+        //         createdAt: -1
+        //     }
+        // })
 
         if (!order) {
 
@@ -39,11 +34,17 @@ router.post('/orders', auth, async (req, res) => {
             })
 
             await newOrder.save()
+
+            return res.send({ message: 'Order Added successfully' })
         }
 
         if (order.status === 'pending') {
 
-            
+            order.products = order.products.concat(req.body.products)
+
+            await order.save()
+
+            return res.send({ message: 'Order updated.' })
         }
 
     } catch (e) {
@@ -51,6 +52,20 @@ router.post('/orders', auth, async (req, res) => {
     }
 })
 
+router.get('/orders', auth, async (req, res) => {
+    try {
+        const order = await Order.find({ user_id: req.user._id })
 
+        if (!order) {
+            return res.status(404).send({ message: 'No Orders yet.' })
+        }
+        // console.log(order)
+
+        res.send({ transactions: order })
+
+    } catch (e) {
+        res.status(500).send({ message: e.message })
+    }
+})
 
 module.exports = router
